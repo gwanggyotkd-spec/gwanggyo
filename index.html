@@ -4276,7 +4276,7 @@ var BIZ = { name:"더빛광교태권도장", no:"〔사업자번호〕", owner:"
 var STAMP_IMG="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
 var COUPON_IMG_T="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
 var COUPON_IMG_D="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
-var GSHEET_URL = "";
+var GSHEET_URL = "https://script.google.com/macros/s/AKfycbzd5bTdtSYhemZAi7tha0JC49UvIvyDouq5n95YFWgMzul0Xfdl-bEd0hWma5Ffbyj2/exec";
 
 /* ══════════════════════════════════════════════════════════════
    [M1/R4.82] 도장 설정(DOJO_CONFIG) 골격 — 범용판 1단계
@@ -18667,7 +18667,7 @@ window.regGuideSave=function(){
    · 운영규정(rules.html)과 같은 주소라 비밀키를 함께 쓴다(naracha_fees_key).
    · fail-closed — 주소·비밀키가 없거나 값이 이상하면 아무 것도 보내지 않는다.
      이 저장이 실패해도 프로그램의 로컬 저장·클라우드 동기화에는 전혀 영향이 없다. */
-var FEE_SHEET_URL="";
+var FEE_SHEET_URL="https://script.google.com/macros/s/AKfycbzd5bTdtSYhemZAi7tha0JC49UvIvyDouq5n95YFWgMzul0Xfdl-bEd0hWma5Ffbyj2/exec";
 function feeSheetPush(d){
   try{
     var key=""; try{ key=localStorage.getItem("naracha_fees_key")||""; }catch(e){}
