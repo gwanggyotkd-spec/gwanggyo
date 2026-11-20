@@ -21625,7 +21625,7 @@ function renderScheduleTab(){
     '<button class="chip" style="color:var(--blue)" onclick="addCoach()">＋ 추가</button></div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:6px">여기 명단이 각 시간의 지도진 선택 목록이 됩니다. (변경 후 아래 [시간표 저장])</div>'+
     '</div>'+
-    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 맘스부 10:00 · 1~4부 2:30~6:20 · 승급심사 6:30 · 시범단 7:00 · 청소년·성인 8:30) <button onclick="gwSignupImport()" title="수련신청 시트의 「신청현황」 탭을 엑셀로 받아 고르면 그 달 정규시간 변경으로 넣습니다" style="margin-left:8px;border:1.5px solid #182682;color:#182682;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📥 수련신청 결과 불러오기</button></div>'+
+    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 맘스부 10:00 · 1~4부 2:30~6:20 · 승급심사 6:30 · 시범단 7:00 · 청소년·성인 8:30) <button onclick="gwSignupImport()" title="수련신청 시트의 「신청현황」 탭을 엑셀로 받아 고르면 그 달 정규시간 변경으로 넣습니다" style="margin-left:8px;border:1.5px solid #182682;color:#182682;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📥 수련신청 결과 불러오기</button> <button onclick="gwExamRecExport()" title="다음 심사 추천 명단을 수련신청 시트 「심사추천」 탭 모양 엑셀로 받습니다" style="margin-left:4px;border:1.5px solid #B45309;color:#B45309;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📤 심사추천 명단 내보내기</button></div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:10px">각 시간의 반 이름과 종류(수업·심사·시범단·대회준비)를 정합니다. 수련시간표의 바탕이 됩니다.</div>'+
     '<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%"><tr style="background:#F2F4F7"><th style="font-size:11.5px;color:var(--sub);padding:6px 4px;border-radius:6px 0 0 6px">시간</th>'+
     ["월","화","수","목","금"].map(function(d){return '<th style="font-size:13.5px;font-weight:900;padding:6px 4px">'+d+'</th>';}).join('')+'</tr>';
@@ -46247,6 +46247,23 @@ function gwExamFeeOf(nm){
     persistAtt(); if(myRole()==='admin') persist(); gwSignupClose(); try{ render(); }catch(e){}
     toast('📥 '+P.ym+' 수련신청 '+n+'명을 정규시간 변경으로 넣었습니다'); };
 })();
+
+/* ═══════════ 심사추천 명단 → 수련신청 시트 「심사추천」 탭(대상월·수련생 이름·현재 급수·다음 급수·분류·현재 횟수·부족 횟수·비고) ═══════════ */
+window.gwExamRecRows=function(){ var d=''; try{ d=nextExamDate()||''; }catch(e){} var ym=String(d||'').slice(0,7), out=[];
+  (STUDENTS||[]).forEach(function(s){ if(!s||!s.n) return; try{ if(isQuit(s.n)||(state.closedMap||{})[s.n]) return; }catch(e){}
+    var acc=(state.accMap||{})[s.n]||0, ng=''; try{ ng=nextGrade(s.grade||''); }catch(e){}
+    var demo=false; try{ demo=!!isDemo(s.n); }catch(e){} var man=false; try{ man=!!isManualRec(s.n); }catch(e){}
+    try{ if(isKkwReady(s.grade)||(state.kkwPending||[]).indexOf(s.n)>-1||isKkwConf(s.n)) return; }catch(e){}
+    if(demo){ out.push([ym, s.n, s.grade||'', ng, '시범단', acc, '', '시범단 — 24회 기준 없음']); return; }
+    var proj=acc; try{ if(d) proj=examProjection(s.n,d).proj; }catch(e){}
+    try{ if(gwReopenBlock(s.n, d)) return; }catch(e){}
+    if(man || proj>=EXAM_NEED) out.push([ym, s.n, s.grade||'', ng, '응시가능', acc, '', man?'지도진 추천':'예정 포함 '+proj+'회']);
+    else if(proj>=EXAM_NEED-4) out.push([ym, s.n, s.grade||'', ng, '보강대상', acc, EXAM_NEED-proj, '보강으로 24회를 채우면 응시']);
+  });
+  var O={'응시가능':0,'보강대상':1,'시범단':2}; out.sort(function(a,b){ return (O[a[4]]-O[b[4]])||a[1].localeCompare(b[1],'ko'); }); return {ym:ym, rows:out}; };
+window.gwExamRecExport=function(){ var R=gwExamRecRows(); if(!R.ym){ alert('다음 심사일을 알 수 없습니다.'); return; } if(!R.rows.length){ alert(R.ym+' 심사 추천 대상이 없습니다.'); return; }
+  try{ var ws=XLSX.utils.aoa_to_sheet([['대상월','수련생 이름','현재 급수','다음 급수','분류','현재 횟수','부족 횟수','비고']].concat(R.rows)), wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, '심사추천'); XLSX.writeFile(wb, '심사추천_'+R.ym+'.xlsx');
+    toast('📤 '+R.ym+' 심사추천 '+R.rows.length+'명 — 수련신청 시트 「심사추천」 탭에 붙여 넣으세요'); }catch(e){ alert('엑셀을 만들지 못했습니다: '+(e&&e.message||e)); } };
 
 </script>
 </body>
