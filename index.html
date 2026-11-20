@@ -12271,6 +12271,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.829", "d": "2026-11-20", "t": "운영규정 맞춤 — 남은 것", "L": ["수련시간표 › 시간표 설정 「📥 수련신청 결과 불러오기」: 수련신청 시트의 신청현황을 엑셀로 받아 고르면 그 달 정규시간으로 넣습니다", "국기원 불합격 뒤 다시 응시하면 재응시 심사비(1품 59,000원~)로 청구하고, 합격하면 최종 격파심사를 안내합니다", "학적부에 개인정보·초상권 동의와 생활 규칙 경고(1·2·3차) 기록 칸이 생겼습니다"]},
   {"v": "v13.829", "d": "2026-11-20", "t": "수련 시간표를 운영규정에 맞춤", "L": ["시간표가 맘스부 10:00 · 1부 2:30 · 2부 3:30 · 3부 4:30 · 4부 5:30 · 승급심사 6:30 · 초등부 시범단 7:00 · 청소년·성인부(월수금)/청소년 시범단(화목) 8:30으로 바뀌었습니다 — 토요일 수업은 없습니다", "출석 지각 알림·오늘 수업 고르기도 이 시각을 따릅니다 · 학부모 시간표 이미지도 같은 내용", "하루 두 타임 수련하는 날은 승급심사 예상 횟수를 2회로 셉니다", "장기결석은 출석 체크를 시작하고 4주가 지난 뒤부터 판정합니다(그 전에는 지도진이 직접 지정한 것만)"]},
   {"v": "v13.829", "d": "2026-11-20", "t": "수련비 청구를 운영규정에 맞춤", "L": ["수련비 칸을 누르면 한 달 단위로 청구합니다(두 달 묶음·월말 후불 없음)", "초과 수련은 1회 10,000원 — 보강으로 나온 날은 빼고, 실제 횟수에 맞는 등록 금액을 넘지 않습니다", "형제는 모두 월 5,000원, 셋째부터 30% 할인 · 학적부 「직접 등·하원」에 체크하면 월 10,000원 할인 · 6·12개월 선납 할인과는 큰 쪽 하나만", "체험비를 냈으면 입회비에서 빼고, 형제가 추가로 입관하면 도복을 증정합니다 · 미납 안내는 2주(1차)·4주(최종) 기준"]},
   {"v": "v13.829", "d": "2026-11-20", "t": "운영규정에 맞춤", "L": ["승급심사 추천: 심사일까지 예정 포함 24회면 추천, 1~4회 부족은 보강 대상 — 1급·각 품 2급(국기원 준비)과 한 달 이상 휴관 후 복관한 달은 빠집니다", "수련비: 금액 관리 값으로 청구 금액을 제안하고, 초과 수련은 1회 10,000원 · 결제 수단은 카드·계좌·용인페이·현금·기타", "띠 이름: 2급 빨강띠 · 1급 국기원빨간띠", "대관·KIS·익스트림·해외행사 메뉴는 숨겼습니다"]}
@@ -18681,6 +18682,7 @@ var RC_DEFAULT={
   examReg:20000,examPoom:10000,examSolo:30000,examMakeup:40000,
   poom1:170000,poom2:180000,poom3:190000,poom4:250000,
   dan1:170000,dan2:180000,dan3:190000,dan4:250000,dan5:300000,
+  rePoom1:59000,rePoom2:69000,rePoom3:79000,rePoom4:89000,reDan1:59000,reDan2:69000,reDan3:79000,reDan4:109000,reDan5:129000,
   gearArm:30000,gearHand:40000,gearGroin:20000,gearBody:30000,gearHead:30000,gearBag:8000,mouthpiece:10000,
   dobokPum:35000,dobokDan:45000,dobokTop:30000,dobokPants:20000,
   beltGrade:5000,beltPoom4:10000,beltPoom5:12000,
@@ -18700,6 +18702,7 @@ var RC_GROUPS=[
   ["심사비",[["examReg","정기승급심사(유급자)"],["examPoom","정기승급심사(유품·단자)"],["examSolo","개별심사"],["examMakeup","Make up Test"]]],
   ["국기원 품 심사비",[["poom1","1품"],["poom2","2품"],["poom3","3품"],["poom4","4품"]]],
   ["국기원 단 심사비",[["dan1","1단"],["dan2","2단"],["dan3","3단"],["dan4","4단"],["dan5","5단"]]],
+  ["국기원 재응시(불합격 후 · 제27조)",[["rePoom1","1품"],["rePoom2","2품"],["rePoom3","3품"],["rePoom4","4품"],["reDan1","1단"],["reDan2","2단"],["reDan3","3단"],["reDan4","4단"],["reDan5","5단"]]],
   ["도복",[["dobokPum","품도복 상하의 한벌"],["dobokDan","단도복 상하의 한벌"],["dobokTop","상의만"],["dobokPants","하의 바지만"]]],
   ["띠",[["beltGrade","유급자띠(흰~빨강)"],["beltPoom4","유품자 띠 4cm"],["beltPoom5","유품자 띠 5cm"]]],
   ["티셔츠",[["teeShortS","반팔 110~130"],["teeShortL","반팔 140 이상"],["teeLongS","긴팔 110~130"],["teeLongL","긴팔 140 이상"]]],
@@ -21622,7 +21625,7 @@ function renderScheduleTab(){
     '<button class="chip" style="color:var(--blue)" onclick="addCoach()">＋ 추가</button></div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:6px">여기 명단이 각 시간의 지도진 선택 목록이 됩니다. (변경 후 아래 [시간표 저장])</div>'+
     '</div>'+
-    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 맘스부 10:00 · 1~4부 2:30~6:20 · 승급심사 6:30 · 시범단 7:00 · 청소년·성인 8:30)</div>'+
+    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 맘스부 10:00 · 1~4부 2:30~6:20 · 승급심사 6:30 · 시범단 7:00 · 청소년·성인 8:30) <button onclick="gwSignupImport()" title="수련신청 시트의 「신청현황」 탭을 엑셀로 받아 고르면 그 달 정규시간 변경으로 넣습니다" style="margin-left:8px;border:1.5px solid #182682;color:#182682;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📥 수련신청 결과 불러오기</button></div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:10px">각 시간의 반 이름과 종류(수업·심사·시범단·대회준비)를 정합니다. 수련시간표의 바탕이 됩니다.</div>'+
     '<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%"><tr style="background:#F2F4F7"><th style="font-size:11.5px;color:var(--sub);padding:6px 4px;border-radius:6px 0 0 6px">시간</th>'+
     ["월","화","수","목","금"].map(function(d){return '<th style="font-size:13.5px;font-weight:900;padding:6px 4px">'+d+'</th>';}).join('')+'</tr>';
@@ -25738,7 +25741,7 @@ function effectiveRegMove(name, wkMon){
   regMovesFor(name).forEach(function(e){ var ew=mondayOf(e.from); if(ew<=wkMon){ if(!best){best=e;} else { var bw=mondayOf(best.from); if(ew>bw || (ew===bw && (e.t||0)>(best.t||0))) best=e; } } });
   return best;
 }
-function _slotLabel(key){ var p=String(key).split('-'); var dn=(W_DAYS.find(function(x){return x[0]===p[0];})||["","?"])[1]; return dn+' '+p[1]+':00'; }
+function _slotLabel(key){ var p=String(key).split('-'); var dn=(W_DAYS.find(function(x){return x[0]===p[0];})||["","?"])[1]; return dn+' '+gwHHM(Number(p[1])); }
 window.openRegM=function(){ state.regM={ q:"", pick:"", from:today(), slots:[], editHid:null, _d:"mon", _h:"14" }; state.regDone=null; render(); };
 window.closeRegM=function(){ state.regM=null; state.regDone=null; render(); };
 window.regNewMode=function(){ if(!state.regM)return; state.regM.editHid=null; state.regM.from=today(); state.regM.slots=[]; state.regDone=null; render(); };
@@ -27776,6 +27779,7 @@ function renderStuChart(m){
   var guardInner=gdHtml+(m.sp?'<div style="display:flex;align-items:center;gap:8px;padding:6px 0 0;margin-top:6px;border-top:1px dashed '+LINE+'"><span style="flex:0 0 46px;font-size:12.5px;font-weight:700;color:'+NAVY+'">본인</span><a href="tel:'+esc((m.sp||"").replace(/[^0-9]/g,""))+'" style="margin-left:auto;font-size:14.5px;color:'+NAVY+';text-decoration:none;font-weight:700">'+esc(m.sp)+'</a></div>':'');
   var addrInner=m.addr?'<div style="font-size:15px;color:'+INK+';line-height:1.55;word-break:keep-all">'+esc(m.addr)+'</div>':'<div style="font-size:13.5px;color:'+SUB+'">주소 없음 · [수정]에서 입력</div>';   /* [R4.824] 관장님: 인적사항과 보호자 연락처 사이 */
   if(m.selfRide) addrInner+='<div style="margin-top:5px;font-size:13px;font-weight:800;color:#182682">🚶 직접 등·하원 · 수련비 월 10,000원 할인</div>';
+  if(typeof gwStuExtraView==='function') addrInner+=gwStuExtraView(m);
 
   /* 가족·형제 */
   var famInner='';
@@ -28415,6 +28419,7 @@ function renderStuModal(){
      '<div style="margin:2px 0 6px"><b style="font-size:13.5px">🏠 주소</b> <span style="font-size:11.5px;color:var(--sub)">출석부·비상 연락용 (학부모앱에는 보이지 않음)</span>'+
        '<input class="input" lang="ko" placeholder="예: 수원시 영통구 ○○로 00, ○○동 ○○호" value="'+esc(m.addr||"")+'" oninput="stuMF(\'addr\',this.value)" style="margin-top:5px"></div>'+
      '<label style="display:flex;align-items:center;gap:7px;margin:2px 0 8px;font-size:13.5px;cursor:pointer"><input type="checkbox" '+(m.selfRide?'checked':'')+' onchange="state.stuM.selfRide=this.checked" style="width:17px;height:17px">🚶 <b>직접 등·하원</b> <span style="font-size:11.5px;color:var(--sub)">수련비 월 10,000원 할인 · 운영규정 제11조 ⑥</span></label>'+
+     (typeof gwStuExtraForm==='function'? gwStuExtraForm(m) : '')+
    /* ── 🩺 건강·안전 ── */
    '<div style="border-top:1px solid var(--line);margin:8px 0 6px;padding-top:7px"><b style="font-size:13.5px">🩺 건강·안전</b> <span style="font-size:11.5px;color:var(--sub)">응급 상황 대비 · 아는 것만 입력</span></div>'+
    '<div style="display:flex;gap:6px;margin-bottom:5px">'+
@@ -46146,6 +46151,101 @@ function gwExamFeeOf(nm){
     var ps=gwProgStart(); if(!ps || ps>=cut) return false;  /* 출석 체크를 시작한 지 4주가 안 됨 */
     if(last) return last<cut;
     var pf=D.placedFirst[name]; return ((pf && pf>ps)? pf : ps) < cut; }; }
+})();
+
+/* ═══════════ 국기원 심사(운영규정 제27·28조) — 불합격 뒤 다시 응시하면 재응시 심사비 · 합격하면 최종 격파심사 안내 ═══════════ */
+(function(){
+  var BREAK={1:'뛰어 앞차기 (얼굴 높이)',2:'1.8cm 송판 메주먹 격파',3:'2.5cm 송판 메주먹 격파',4:'4.5cm 송판 메주먹 격파'};
+  window.gwKkwRetake=function(nm){ var i=(state.kkwInfo||{})[nm]; if(!i||!i.fail) return false; var s=(STUDENTS||[]).find(function(x){ return x&&x.n===nm; }); return !!s && (!s.lastPromo || String(i.fail)>String(s.lastPromo)); };
+  if(typeof window.kkwFeeOf==='function'){ var _kf0=kkwFeeOf; kkwFeeOf=function(nm){ var r=_kf0(nm); if(!r||!r.lv||!gwKkwRetake(nm)) return r;
+      var m=/^(\d+)(품|단)/.exec(r.lv), c={}; try{ c=rcLoad()||{}; }catch(e){} var v=m? Number(c[(m[2]==='품'?'rePoom':'reDan')+m[1]]) : 0;
+      if(v>0){ r.amt=v; r.retake=true; r.lv=r.lv+' 재응시'; } return r; }; }
+  if(typeof window.kkwApplyPass==='function'){ var _kp0=kkwApplyPass; kkwApplyPass=function(name, ng, d){ var ok=_kp0.apply(this, arguments);
+      try{ var m=/^(\d+)(품|단)/.exec(String(ng||'')); if(ok && m && BREAK[+m[1]]) setTimeout(function(){ toast('🥋 '+name+' 국기원 '+m[1]+m[2]+' 합격 — 띠를 주기 전 도장 최종 격파심사: '+BREAK[+m[1]]+' (운영규정 제28조)'); }, 400); }catch(e){}
+      return ok; }; }
+})();
+
+/* ═══════════ 학적부: 개인정보·초상권 동의(제32조) · 생활 규칙 경고 1·2·3차(제33조) — 학생 기록에 선택 칸만 더함 ═══════════
+   consent = {pi:'동의일', photo:'Y'|'N', pd:'초상권 답한 날'} · warns = [{n:1|2|3, d:'날짜', m:'내용'}] */
+(function(){
+  var W={1:'1차 경고 (수련생 면담)',2:'2차 경고 (보호자 면담)',3:'3차 경고 (퇴관 조치)'};
+  function _st(n){ return (STUDENTS||[]).find(function(x){ return x&&x.n===n; })||null; }
+  window.gwStuExtraForm=function(m){ var c=m.consent||{}, ws=m.warns||[];
+    var nx=Math.min(3,(ws.length? Math.max.apply(null, ws.map(function(w){ return w.n||0; })) : 0)+1);
+    return '<div style="margin:2px 0 8px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#FAFBFD">'+
+      '<b style="font-size:13px">🔐 개인정보·초상권 동의</b> <span style="font-size:11.5px;color:var(--sub)">운영규정 제32조</span>'+
+      '<label style="display:flex;align-items:center;gap:7px;margin-top:6px;font-size:13px;cursor:pointer"><input type="checkbox" '+(c.pi?'checked':'')+' onchange="gwConsentSet(\'pi\',this.checked)" style="width:16px;height:16px">개인정보 수집·이용 동의 받음'+(c.pi?' <span style="color:var(--sub);font-size:11.5px">('+esc(c.pi)+')</span>':'')+'</label>'+
+      '<div style="display:flex;align-items:center;gap:7px;margin-top:5px;font-size:13px">홍보용 사진·영상(초상권) '+
+        [['Y','동의'],['N','동의 안 함'],['','아직']].map(function(o){ var on=(String(c.photo||'')===o[0]); return '<button type="button" onclick="gwConsentSet(\'photo\',\''+o[0]+'\')" style="border:1.5px solid '+(on?'#182682':'var(--line)')+';background:'+(on?'#182682':'#fff')+';color:'+(on?'#fff':'inherit')+';border-radius:8px;padding:3px 9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">'+o[1]+'</button>'; }).join('')+'</div>'+
+      '<div style="border-top:1px dashed var(--line);margin-top:8px;padding-top:7px"><b style="font-size:13px">⚠ 생활 규칙 경고</b> <span style="font-size:11.5px;color:var(--sub)">운영규정 제33조 — 1차 수련생 면담 → 2차 보호자 면담 → 3차 퇴관</span>'+
+        (ws.length? ws.map(function(w,i){ return '<div style="font-size:12.5px;margin-top:4px">'+esc(W[w.n]||w.n+'차')+' · '+esc(w.d||'')+(w.m?' · '+esc(w.m):'')+' <button type="button" onclick="gwWarnDel('+i+')" style="border:none;background:none;color:#B91C1C;cursor:pointer;font-size:12px">지우기</button></div>'; }).join('') : '<div style="font-size:12px;color:var(--sub);margin-top:4px">기록 없음</div>')+
+        (ws.length<3? '<button type="button" onclick="gwWarnAdd('+nx+')" style="margin-top:6px;border:1.5px solid #B45309;color:#B45309;background:#fff;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit">+ '+esc(W[nx])+' 기록</button>':'')+
+      '</div></div>'; };
+  window.gwStuExtraView=function(m){ var c=m.consent||{}, ws=m.warns||[], out='';
+    out+='<div style="margin-top:5px;font-size:12.5px;color:#41506B">🔐 개인정보 동의 '+(c.pi?'✅ '+esc(c.pi):'미확인')+' · 초상권 '+(c.photo==='Y'?'✅ 동의':c.photo==='N'?'🚫 동의 안 함':'미확인')+'</div>';
+    if(ws.length) out+='<div style="margin-top:4px;font-size:12.5px;font-weight:800;color:#B45309">⚠ '+ws.map(function(w){ return (W[w.n]||w.n+'차').split(' ')[0]+' '+esc(w.d||''); }).join(' · ')+'</div>';
+    return out; };
+  window.gwConsentSet=function(k,v){ var m=state.stuM; if(!m) return; var c=m.consent=Object.assign({}, m.consent||{});
+    if(k==='pi'){ if(v) c.pi=today(); else delete c.pi; } else { if(v){ c.photo=v; c.pd=today(); } else { delete c.photo; delete c.pd; } }
+    try{ render(); }catch(e){} };
+  window.gwWarnAdd=function(n){ var m=state.stuM; if(!m) return; var memo=uiPrompt((W[n]||n+'차 경고')+' — 내용(선택, 서면·문자 안내 여부 등)','',window.gwWarnAdd,arguments); if(memo===undefined||memo===null) return;
+    m.warns=(m.warns||[]).concat([{n:n, d:today(), m:String(memo||'').trim().slice(0,120)}]); try{ render(); }catch(e){} };
+  window.gwWarnDel=function(i){ var m=state.stuM; if(!m||!m.warns) return; if(!confirm('이 경고 기록을 지울까요?')) return; m.warns=m.warns.filter(function(_,j){ return j!==i; }); try{ render(); }catch(e){} };
+  if(typeof window.openStuM==='function'){ var _o=openStuM; openStuM=function(name){ var r=_o.apply(this, arguments); try{ var s=name&&_st(name); if(s && state.stuM){ state.stuM.consent=s.consent? JSON.parse(JSON.stringify(s.consent)) : {}; state.stuM.warns=s.warns? JSON.parse(JSON.stringify(s.warns)) : []; } }catch(e){} return r; }; window.openStuM=openStuM; }
+  if(typeof window.saveStuM==='function'){ var _sv=saveStuM; saveStuM=function(){ var m=state.stuM, nm=m?String(m.n||'').trim():'', c=m&&m.consent, ws=m&&m.warns;
+      var r=_sv.apply(this, arguments);
+      try{ var s=_st(nm); if(s && m){ var a=JSON.stringify(s.consent||{}), b=JSON.stringify(c||{}), a2=JSON.stringify(s.warns||[]), b2=JSON.stringify(ws||[]);
+        if(a!==b || a2!==b2){ if(c && Object.keys(c).length) s.consent=c; else delete s.consent; if(ws && ws.length) s.warns=ws; else delete s.warns; s._t=Date.now(); state.rosterT=Date.now(); persistAtt(); if(myRole()==="admin") persist(); } } }catch(e){}
+      return r; }; window.saveStuM=saveStuM; }
+})();
+
+/* ═══════════ 수련신청 결과 → 정규시간 변경(운영규정 제9조) ═══════════
+   수련신청 시트의 「신청현황」 탭(대상월·수련생·뒷4자리·요일·시작·끝·반 이름·저장일시)을 엑셀/CSV로 받아 고르면,
+   그 달 1일부터의 정규시간 변경(regMoves — 기존 기능 그대로, 주간 복사 때 자동 배치)으로 넣는다. 같은 달을 다시 넣으면 고쳐 씀. */
+(function(){
+  var DM={'월':'mon','화':'tue','수':'wed','목':'thu','금':'fri','토':'sat','일':'sun'};
+  function _min(v){ var m=String(v==null?'':v).match(/(\d{1,2})\s*[:시]\s*(\d{2})?/); if(!m) return -1; var h=+m[1], mm=+(m[2]||0); if(h>=1&&h<=9) h+=12; return h*60+mm; }
+  function _hh(min){ for(var k in GW_SLOT){ if(GW_SLOT[k][0]===min) return +k; } return null; }
+  function _ym(v){ var m=String(v==null?'':v).match(/(\d{4})\D+(\d{1,2})/); return m? m[1]+'-'+('0'+m[2]).slice(-2) : ''; }
+  window.gwSignupParse=function(aoa){ var hi=-1, H=null;
+    for(var i=0;i<Math.min(aoa.length,8);i++){ var r=(aoa[i]||[]).map(function(c){ return String(c==null?'':c).trim(); }); if(r.indexOf('수련생')>-1 && r.indexOf('요일')>-1 && r.indexOf('시작')>-1){ hi=i; H=r; break; } }
+    if(hi<0) return {err:'「신청현황」 탭이 아닌 것 같습니다 — 첫 줄에 수련생·요일·시작 칸이 있어야 합니다.'};
+    var ix=function(n){ return H.indexOf(n); }, by={}, months={}, bad=[];
+    for(var j=hi+1;j<aoa.length;j++){ var r2=aoa[j]||[], nm=String(r2[ix('수련생')]||'').replace(/\s+/g,' ').trim(); if(!nm) continue;
+      var ym=_ym(r2[ix('대상월')]), d=DM[String(r2[ix('요일')]||'').trim().charAt(0)], hh=_hh(_min(r2[ix('시작')]));
+      if(!ym||!d||hh==null){ bad.push(nm+' '+String(r2[ix('요일')]||'')+' '+String(r2[ix('시작')]||'')); continue; }
+      months[ym]=(months[ym]||0)+1; var k=ym+'|'+nm; (by[k]=by[k]||[]); if(by[k].indexOf(d+'-'+hh)<0) by[k].push(d+'-'+hh); }
+    var ym0=Object.keys(months).sort().pop()||''; var out=[];
+    Object.keys(by).forEach(function(k){ var p=k.split('|'); if(p[0]!==ym0) return; out.push({n:p[1], slots:by[k].sort()}); });
+    out.sort(function(a,b){ return a.n.localeCompare(b.n,'ko'); });
+    return {ym:ym0, rows:out, bad:bad}; };
+  window.gwSignupImport=function(){
+    if(myRole()!=='admin'){ alert('관리자 기기에서만 할 수 있습니다.'); return; }
+    if(!state.attPulledOnce){ alert('클라우드 명단을 아직 받지 못했습니다. 잠시 뒤 다시 눌러 주세요.'); return; }
+    var inp=document.createElement('input'); inp.type='file'; inp.accept='.xlsx,.xls,.csv';
+    inp.onchange=function(){ var fl=inp.files&&inp.files[0]; if(!fl) return; var rd=new FileReader();
+      rd.onload=function(ev){ try{ var wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array'}), sn=wb.SheetNames.indexOf('신청현황')>-1?'신청현황':wb.SheetNames[0];
+          var P=gwSignupParse(XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1, raw:false, defval:''})); if(P.err){ alert(P.err); return; } if(!P.rows.length){ alert('넣을 신청이 없습니다.'); return; }
+          window.__gwSu=P; gwSignupPaint(); }catch(e){ alert('파일을 읽지 못했습니다: '+(e&&e.message||e)); } };
+      rd.readAsArrayBuffer(fl); }; inp.click(); };
+  window.gwSignupPaint=function(){ var P=window.__gwSu; if(!P) return; var old=document.getElementById('gwSuOv'); if(old) old.remove();
+    var have={}; (STUDENTS||[]).forEach(function(s){ have[s.n]=1; }); var ok=P.rows.filter(function(r){ return have[r.n]; }), no=P.rows.filter(function(r){ return !have[r.n]; });
+    var body='<div style="font-size:13.5px;line-height:1.7"><b>'+esc(P.ym)+'</b> 신청 · <b>'+ok.length+'명</b>을 '+esc(P.ym)+'-01부터 정규시간 변경으로 넣습니다. 주간 복사 때 그 시간에 자동 배치됩니다.'+
+      (no.length?'<br><span style="color:#B45309">명단에 없는 이름 '+no.length+'명(넣지 않음): '+esc(no.map(function(r){return r.n;}).join(', '))+'</span>':'')+
+      (P.bad.length?'<br><span style="color:#6B7280">시간을 알 수 없는 줄 '+P.bad.length+'개는 건너뜁니다: '+esc(P.bad.slice(0,5).join(' / '))+'</span>':'')+'</div>'+
+      '<div style="max-height:44vh;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px;font-size:12.5px">'+ok.map(function(r){ return '<div style="padding:5px 9px;border-bottom:1px solid #EEE"><b>'+esc(r.n)+'</b> · '+esc(r.slots.map(_slotLabel).join(', '))+'</div>'; }).join('')+'</div>';
+    var w=document.createElement('div'); w.innerHTML=uiModalHtml({id:'gwSuOv',title:'📥 수련신청 결과 불러오기',sub:'미리 보기 — 아직 바뀐 것이 없습니다',close:'gwSignupClose()',body:body,foot:'<button class="btn btn-s" onclick="gwSignupClose()">취소</button><button class="btn btn-p" onclick="gwSignupApply()"'+(ok.length?'':' disabled')+'>정규시간에 반영</button>'});
+    document.body.appendChild(w.firstChild); };
+  window.gwSignupClose=function(){ var o=document.getElementById('gwSuOv'); if(o) o.remove(); window.__gwSu=null; };
+  window.gwSignupApply=function(){ var P=window.__gwSu; if(!P) return; var have={}; (STUDENTS||[]).forEach(function(s){ have[s.n]=1; });
+    var from=P.ym+'-01', now=Date.now(), n=0; if(!state.regMoves) state.regMoves={};
+    P.rows.forEach(function(r){ if(!have[r.n]) return; var arr=state.regMoves[r.n]=state.regMoves[r.n]||[];
+      var e=arr.filter(function(x){ return !x.del && x.from===from && x.src==='신청'; })[0];
+      if(e){ if(JSON.stringify(e.slots)===JSON.stringify(r.slots)) return; e.slots=r.slots.slice(); e.t=now; }
+      else arr.push({ hid:(typeof _newHid==='function'? _newHid() : 'h'+now.toString(36)+n), from:from, slots:r.slots.slice(), t:now, src:'신청' });
+      n++; });
+    persistAtt(); if(myRole()==='admin') persist(); gwSignupClose(); try{ render(); }catch(e){}
+    toast('📥 '+P.ym+' 수련신청 '+n+'명을 정규시간 변경으로 넣었습니다'); };
 })();
 
 </script>
