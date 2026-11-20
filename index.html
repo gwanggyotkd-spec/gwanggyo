@@ -3050,7 +3050,7 @@ window.pushRegSync=async function(force){ if(window.EMBED_ACCT||window.FIN_APP) 
 setTimeout(function(){ try{ pushRegSync(); }catch(e){} }, 70000);
 setInterval(function(){ try{ pushRegSync(); }catch(e){} }, 10*60*1000);
 function _pushTime(){ var d=new Date(); return d.getHours()+'시 '+('0'+d.getMinutes()).slice(-2)+'분'; }
-function _pushHhTxt(hh){ return hh>=12? '오후 '+(hh===12?12:hh-12)+'시' : '오전 '+hh+'시'; }
+function _pushHhTxt(hh){ var m=(typeof gwSlotMin==='function')?gwSlotMin(hh):hh*60, h=Math.floor(m/60), mm=m%60; return (h>=12?'오후 '+(h===12?12:h-12):'오전 '+h)+'시'+(mm?' '+mm+'분':''); }
 /* [R4.610] 출석 체크 → 등원·지각·결석 알림(팀장님 2026-11-03) — 지각 = 출석 체크를 누른 시각이 수업 정시를 넘었을 때.
    결석은 수업 시작 뒤 결석 체크만(미리 결석 처리는 보내지 않음). 잘못 눌러 고치는 경우를 위해 8초 뒤 마지막 상태만 · 같은 수업·같은 종류는 하루 1회 */
 var PUSH_ATT_DELAY=8000;
@@ -3061,8 +3061,8 @@ function pushAttendMark(key, name, next, prevS){
     var n=new Date(), nowMin=n.getHours()*60+n.getMinutes(), tm=_pushTime(), sk=name+'|'+cd+'|'+hh;
     var Q=window.__pushAttQ||(window.__pushAttQ={}), q=Q[sk]; if(q) clearTimeout(q.t);
     var kind=null;
-    if(next==='출석') kind=(nowMin>hh*60)?'late':'attend';
-    else if(next==='결석' && nowMin>=hh*60) kind='absent';
+    if(next==='출석') kind=(nowMin>gwSlotMin(hh))?'late':'attend';
+    else if(next==='결석' && nowMin>=gwSlotMin(hh)) kind='absent';
     if(!kind){ delete Q[sk]; return; }
     if(prevS===next && !q) return;
     Q[sk]={kind:kind, t:setTimeout(function(){ delete Q[sk]; _pushAttSend(name, cd, hh, kind, tm); }, PUSH_ATT_DELAY)};
@@ -12271,6 +12271,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.829", "d": "2026-11-20", "t": "수련 시간표를 운영규정에 맞춤", "L": ["시간표가 맘스부 10:00 · 1부 2:30 · 2부 3:30 · 3부 4:30 · 4부 5:30 · 승급심사 6:30 · 초등부 시범단 7:00 · 청소년·성인부(월수금)/청소년 시범단(화목) 8:30으로 바뀌었습니다 — 토요일 수업은 없습니다", "출석 지각 알림·오늘 수업 고르기도 이 시각을 따릅니다 · 학부모 시간표 이미지도 같은 내용", "하루 두 타임 수련하는 날은 승급심사 예상 횟수를 2회로 셉니다", "장기결석은 출석 체크를 시작하고 4주가 지난 뒤부터 판정합니다(그 전에는 지도진이 직접 지정한 것만)"]},
   {"v": "v13.829", "d": "2026-11-20", "t": "수련비 청구를 운영규정에 맞춤", "L": ["수련비 칸을 누르면 한 달 단위로 청구합니다(두 달 묶음·월말 후불 없음)", "초과 수련은 1회 10,000원 — 보강으로 나온 날은 빼고, 실제 횟수에 맞는 등록 금액을 넘지 않습니다", "형제는 모두 월 5,000원, 셋째부터 30% 할인 · 학적부 「직접 등·하원」에 체크하면 월 10,000원 할인 · 6·12개월 선납 할인과는 큰 쪽 하나만", "체험비를 냈으면 입회비에서 빼고, 형제가 추가로 입관하면 도복을 증정합니다 · 미납 안내는 2주(1차)·4주(최종) 기준"]},
   {"v": "v13.829", "d": "2026-11-20", "t": "운영규정에 맞춤", "L": ["승급심사 추천: 심사일까지 예정 포함 24회면 추천, 1~4회 부족은 보강 대상 — 1급·각 품 2급(국기원 준비)과 한 달 이상 휴관 후 복관한 달은 빠집니다", "수련비: 금액 관리 값으로 청구 금액을 제안하고, 초과 수련은 1회 10,000원 · 결제 수단은 카드·계좌·용인페이·현금·기타", "띠 이름: 2급 빨강띠 · 1급 국기원빨간띠", "대관·KIS·익스트림·해외행사 메뉴는 숨겼습니다"]}
 ];
@@ -21621,19 +21622,19 @@ function renderScheduleTab(){
     '<button class="chip" style="color:var(--blue)" onclick="addCoach()">＋ 추가</button></div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:6px">여기 명단이 각 시간의 지도진 선택 목록이 됩니다. (변경 후 아래 [시간표 저장])</div>'+
     '</div>'+
-    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 13시~21시)</div>'+
+    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 맘스부 10:00 · 1~4부 2:30~6:20 · 승급심사 6:30 · 시범단 7:00 · 청소년·성인 8:30)</div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:10px">각 시간의 반 이름과 종류(수업·심사·시범단·대회준비)를 정합니다. 수련시간표의 바탕이 됩니다.</div>'+
     '<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%"><tr style="background:#F2F4F7"><th style="font-size:11.5px;color:var(--sub);padding:6px 4px;border-radius:6px 0 0 6px">시간</th>'+
     ["월","화","수","목","금"].map(function(d){return '<th style="font-size:13.5px;font-weight:900;padding:6px 4px">'+d+'</th>';}).join('')+'</tr>';
-  for(var hh=13;hh<=21;hh++){
+  for(var hh=10;hh<=21;hh++){ if(slotHours('mon').indexOf(hh)<0) continue;
     x+='<tr style="border-top:2px solid #E4E7EC;background:'+(hh%2?'#FFFFFF':'#F7F9FC')+'">'+
-       '<td style="font-size:13.5px;font-weight:900;color:var(--ink);padding:4px 8px 4px 6px;white-space:nowrap;border-left:3px solid var(--blue)">'+hh+':00</td>'+
+       '<td style="font-size:13.5px;font-weight:900;color:var(--ink);padding:4px 8px 4px 6px;white-space:nowrap;border-left:3px solid var(--blue)">'+gwHHM(hh)+'</td>'+
        ["mon","tue","wed","thu","fri"].map(function(d){return cell(d,hh);}).join('')+'</tr>';
   }
   x+='</table></div></div>';
   x+='<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:10px">토요일 시간표 (9시~15시)</div>'+
     '<div style="overflow-x:auto"><table style="border-collapse:collapse"><tr><th style="font-size:11.5px;color:var(--sub);padding:4px">시간</th><th style="font-size:11.5px;padding:4px">토</th></tr>';
-  for(var sh=9;sh<=14;sh++){   /* [R4.776] 9시 추가 */
+  for(var sh=9;sh<=8;sh++){   /* [광교 G6] 토요일 수업 없음 */
     x+='<tr style="border-top:2px solid #E4E7EC;background:'+(sh%2?'#FFFFFF':'#F7F9FC')+'">'+
        '<td style="font-size:13.5px;font-weight:900;color:var(--ink);padding:4px 8px 4px 6px;white-space:nowrap;border-left:3px solid var(--blue)">'+sh+':00</td>'+cell("sat",sh)+'</tr>';
   }
@@ -24178,7 +24179,13 @@ function isBdayDate(s, dateStr){
   if(!/^\d\d-\d\d$/.test(md)) return false;
   return dateStr.slice(5,10)===md;
 }
-function slotHours(day){ return day==="sat" ? [9,10,11,12,13,14] :   /* [R4.776] 토요일 9시 수업 추가 */ [13,14,15,16,17,18,19,20,21]; }
+/* [광교 G6] 운영규정 제10조 — 칸 열쇠(시 번호)는 그대로, 칸마다 광교 시각 [시작분, 끝분] */
+var GW_SLOT={10:[600,660],14:[870,920],15:[930,980],16:[990,1040],17:[1050,1100],18:[1110,1140],19:[1140,1230],20:[1230,1290]};
+function gwSlotMin(hh){ var x=GW_SLOT[hh]; return x? x[0] : hh*60; }
+function _gwT(min){ var h=Math.floor(min/60), m=min%60; h=h>12?h-12:h; return h+":"+(m<10?"0":"")+m; }
+function gwHHM(hh){ var x=GW_SLOT[hh]; if(!x) return hh+":00"; var h=Math.floor(x[0]/60), m=x[0]%60; return h+":"+(m<10?"0":"")+m; }
+function gwSlotRange(hh, day){ var x=GW_SLOT[hh]; if(!x) return hh+":00"; var e=x[1]; if(hh===20 && (day==="tue"||day==="thu")) e=1320; return _gwT(x[0])+"~"+_gwT(e); }
+function slotHours(day){ return (day==="sat"||day==="sun") ? [] : [10,14,15,16,17,18,19,20]; }
 /* [R4.205] 같은 시간대 수련 블록의 높이를 요일끼리 맞춰 가로 줄을 정렬한다.
    (토요일은 시간대 구성이 달라 제외 · 요일 하나만 보는 중이면 정렬 불필요) */
 function alignWeekSlots(){
@@ -24874,7 +24881,7 @@ function renderWeekTab(){
       var coaches=(state.schedule.coaches||[]);
       x+='<div data-slot="'+hh+'" data-sday="'+day+'" style="border-bottom:1px solid var(--line);background:'+bg+'">'+
          '<div style="padding:4px 8px 2px;font-size:11.5px;display:flex;gap:4px;align-items:center;flex-wrap:wrap">'+
-         '<b>'+hh+':00</b><span style="color:var(--sub)">'+esc(sc.l||"")+'</span>'+
+         '<b>'+gwHHM(hh)+'</b><span style="color:var(--sub)">'+esc(sc.l||"")+'</span>'+
          '<select style="font-size:10px;border:1px solid var(--line);border-radius:5px;background:#fff;padding:1px 2px;font-family:inherit" onchange="setCellCat(\''+key+'\',this.value)">'+
          SCH_CATS.filter(function(k){return k!=="없음";}).map(function(k){return '<option'+(catEff===k?' selected':'')+'>'+k+'</option>';}).join('')+'</select>'+
          '<select style="font-size:10px;border:1px solid var(--line);border-radius:5px;background:#fff;padding:1px 2px;font-family:inherit;max-width:70px" onchange="setCellTch(\''+key+'\',this.value)">'+
@@ -25064,7 +25071,7 @@ function _isFutureSlot(key, cd){
     var hh=parseInt(String(key).split("-")[1],10);
     if(isNaN(hh)) return false;
     var n=new Date();
-    return (n.getHours()*60+n.getMinutes()) < (hh*60);   /* 오늘: 수업 시작 전이면 미래 */
+    return (n.getHours()*60+n.getMinutes()) < gwSlotMin(hh);   /* 오늘: 수업 시작 전이면 미래 */
   }catch(e){ return false; }
 }
 /* 홀딩 가드: 해당 날짜에 홀딩 중인 수련생이면 출결 처리 차단 (먼저 홀딩 해제 후 처리) */
@@ -25299,7 +25306,7 @@ window.chipCtx=function(ev, key, name){
   var hh=parseInt(String(key).split("-")[1],10);
   var nE=esc(name).replace(/'/g,"\\'");
   var st=function(v,lb,col){ var on=(curS===v); return '<button class="ccBtn st'+(on?' on':'')+'" style="'+(on?'background:'+col+';border-color:'+col+';color:#fff':'color:'+col+';border-color:'+col+'55')+'" onclick="chipCtxDo(\'s\',\''+v+'\')">'+(on?'✓ ':'')+lb+'</button>'; };
-  var h='<div class="ccHead"><b>'+esc(name)+'</b><span>'+Number(cd.slice(5,7))+'/'+Number(cd.slice(8,10))+'('+dw+')'+(isNaN(hh)?'':' '+hh+'시')+'</span></div>'+
+  var h='<div class="ccHead"><b>'+esc(name)+'</b><span>'+Number(cd.slice(5,7))+'/'+Number(cd.slice(8,10))+'('+dw+')'+(isNaN(hh)?'':' '+gwHHM(hh))+'</span></div>'+
     '<div class="ccLab">메모 <span style="font-weight:600;color:#B6C0CE">Enter 저장 · Esc 닫기</span></div>'+
     '<div class="ccRow"><input id="ccMemo" value="'+esc(mk.m||"")+'" placeholder="메모 입력 후 Enter" autocomplete="off" style="flex:1;min-width:0;height:32px;border:1.5px solid #DCE3EE;border-radius:9px;padding:0 9px;font-size:13px;font-family:inherit;outline:none" onfocus="this.style.borderColor=\'#2B5FB8\'" onblur="this.style.borderColor=\'#DCE3EE\'" onkeydown="ccMemoKey(event)"><button class="ccBtn" style="flex:0 0 46px;height:32px;color:#2B5FB8;border-color:#2B5FB855" onclick="chipCtxMemoSave()">저장</button></div>'+
     '<div class="ccLab">출석 여부</div><div class="ccRow">'+st("출석","출석","#182682")+st("결석","결석","#B45309")+st("","미정","#64748B")+'</div>'+
@@ -25367,7 +25374,7 @@ window.ttCellCtx=function(ev, key, li, fromClick){
   var cd=dateOfKey(key, curWeek()), WD=["일","월","화","수","목","금","토"], dw=WD[new Date(cd+"T00:00:00").getDay()];
   var hh=parseInt(String(key).split("-")[1],10);
   var el=document.createElement("div"); el.id="chipCtxM";
-  el.innerHTML='<div class="ccHead"><b style="white-space:nowrap">📋 붙여넣기</b><span style="white-space:nowrap">'+Number(cd.slice(5,7))+'/'+Number(cd.slice(8,10))+'('+dw+')'+(isNaN(hh)?'':' '+hh+'시')+'</span></div>'+
+  el.innerHTML='<div class="ccHead"><b style="white-space:nowrap">📋 붙여넣기</b><span style="white-space:nowrap">'+Number(cd.slice(5,7))+'/'+Number(cd.slice(8,10))+'('+dw+')'+(isNaN(hh)?'':' '+gwHHM(hh))+'</span></div>'+
     _ttClipPasteBtn(key, li)+
     '<button class="ccItem wide" onclick="closeChipCtx();openAdd(\''+key+'\','+li+',true)">✏️ 다른 이름 직접 입력</button>'+
     '<div class="ccSep"></div><button class="ccItem wide" onclick="window.__ttClip=null;closeChipCtx();toast(\'복사를 취소했습니다\')">✕ 복사 취소</button>';
@@ -28633,7 +28640,7 @@ function renderTempModal(){
      var opts=slotHours(day).map(function(hh){
        var sc=(state.schedule.cells||{})[day+"-"+hh]||{l:""};
        if(!sc.l && sc.c==="없음") return "";
-       return '<option value="'+day+'-'+hh+'"'+(m.slot===day+'-'+hh?' selected':'')+'>'+hh+':00 '+esc(sc.l||"")+'</option>';
+       return '<option value="'+day+'-'+hh+'"'+(m.slot===day+'-'+hh?' selected':'')+'>'+gwHHM(hh)+' '+esc(sc.l||"")+'</option>';
      }).join('');
      return '<span class="label" style="font-size:11.5px">체험 시간 (선택하면 시간표에 자동 배치)</span>'+
        '<div style="display:flex;gap:8px;margin-bottom:5px">'+
@@ -32570,7 +32577,7 @@ function busDay(){
 var _ttLogoImg=null;
 try{ _ttLogoImg=new Image(); _ttLogoImg.src=LOGO_FULL; }catch(e){}
 function _ttRR(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
-function _ttTimeLabel(hh){ var h1=hh>12?hh-12:hh, ap=hh>=12?'':' AM'; return h1+':00~'+h1+':50'; }
+function _ttTimeLabel(hh){ return gwSlotRange(hh,'mon'); }
 /* ══════════ [R4.414] 학부모 전달용 시간표 이미지 — 포스터 스타일 + 수동 편집 ══════════
    내용 모델(ttOv)을 그린다. 기본값은 관장님 확정 포스터 내용(_ttDefaultModel),
    [현재 시간표 불러오기]로 시간표 설정에서 재생성, 수동 수정 후 저장하면 att 창고(schedule.ttOv)로
@@ -35237,7 +35244,7 @@ function renderBusTab(mobile){
           Object.keys(a).forEach(function(n){ if(_pPlaced[n]) return; (_pMiss[hh]=_pMiss[hh]||[]); if(_pMiss[hh].indexOf(n)<0) _pMiss[hh].push(n); }); });
       } }catch(e){}
       var _pBx='<svg class="bx" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3.5 2.8 19.5h18.4z"/><path d="M12 10v4.2M12 16.9v.2"/></svg>';
-      for(var _ph=13;_ph<=21;_ph++){
+      for(var _ph=10;_ph<=21;_ph++){ if(slotHours(_ptok).indexOf(_ph)<0) continue;
         var _pc=_pwk&&_pwk.cells?(_pwk.cells[_ptok+'-'+_ph]||null):null;
         var _pnames=[]; if(_pc&&_pc.lv){ for(var _pl=0;_pl<3;_pl++) (_pc.lv[_pl]||[]).forEach(function(n){ if(_pnames.indexOf(n)<0)_pnames.push(n); }); }
         var _pcls=(state.schedule&&state.schedule.cells&&state.schedule.cells[_ptok+'-'+_ph])||{};
@@ -42682,7 +42689,7 @@ function render(){
     var kdtok = /^\d{4}-\d{2}-\d{2}$/.test(km.date) ? dayTokFromDate(km.date) : "mon";
     var kdayNm = (W_DAYS.find(function(x){return x[0]===kdtok;})||["","?"])[1];
     var khours = (kdtok==="sun") ? [] : (typeof slotHours==="function"? slotHours(kdtok): [13,14,15,16,17,18,19,20,21]);
-    var kHourOpts = khours.map(function(hh){return '<option value="'+hh+'"'+(String(km._h)===String(hh)?" selected":"")+'>'+hh+':00</option>';}).join('');
+    var kHourOpts = khours.map(function(hh){return '<option value="'+hh+'"'+(String(km._h)===String(hh)?" selected":"")+'>'+gwHHM(hh)+'</option>';}).join('');
     var kLvOpts = [["0","상급"],["1","중급"],["2","초급"]].map(function(o){return '<option value="'+o[0]+'"'+(String(km._lv)===o[0]?" selected":"")+'>'+o[1]+'</option>';}).join('');
     var kexist = kpicked ? makeupsFor(kpicked).slice().sort(function(a,b){return a.date<b.date?-1:1;}) : [];
     var _lvNm=function(l){return ["상급","중급","초급"][l]||"";};
@@ -42752,7 +42759,7 @@ function render(){
     var rpicked = rm.pick && STUDENTS.some(function(s){return s.n===rm.pick;}) ? rm.pick : "";
     var rexist = rpicked ? regMovesFor(rpicked).slice().sort(function(a,b){return a.from<b.from?-1:1;}) : [];
     var rDayOpts=W_DAYS.map(function(d){return '<option value="'+d[0]+'"'+((rm._d||"mon")===d[0]?" selected":"")+'>'+d[1]+'요일</option>';}).join('');
-    var rHourOpts=[9,10,11,12,13,14,15,16,17,18,19,20,21].map(   /* [R4.777] 토요일 9시 */function(hh){return '<option value="'+hh+'"'+(String(rm._h||"14")===String(hh)?" selected":"")+'>'+hh+':00</option>';}).join('');
+    var rHourOpts=[9,10,11,12,13,14,15,16,17,18,19,20,21].map(   /* [R4.777] 토요일 9시 */function(hh){return '<option value="'+hh+'"'+(String(rm._h||"14")===String(hh)?" selected":"")+'>'+gwHHM(hh)+'</option>';}).join('');
     var rSlotChips=(rm.slots||[]).length? rm.slots.map(function(k){return '<span style="display:inline-flex;align-items:center;gap:5px;border:1px solid #9BD3D8;background:#E7F6F7;color:#0A6068;border-radius:14px;padding:4px 6px 4px 12px;font-size:12.5px;font-weight:800;margin:0 5px 5px 0">'+esc(_slotLabel(k))+'<button onclick="regDelSlot(\''+k+'\')" title="빼기" style="border:none;background:none;color:#0A6068;cursor:pointer;font-size:14px;font-weight:900;line-height:1;padding:0 2px">×</button></span>';}).join('') : '<span style="font-size:12px;color:var(--sub)">아직 추가된 시간이 없습니다. 아래에서 요일·시간을 골라 <b>＋ 시간 추가</b>를 누르세요. (수업 횟수만큼 여러 개 가능)</span>';
     var rbody=
       '<div style="font-size:13.5px;font-weight:900;margin-bottom:6px">① 원생 검색</div>'+
@@ -44921,7 +44928,7 @@ function phoneTimetableBody(){
       var catBadge = (catEff!=="수업") ? '<span style="font-size:10px;font-weight:800;background:'+(CAT_COLOR[catEff]||'#eee')+';color:#5A4A00;border-radius:8px;padding:2px 7px;margin-left:6px">'+esc(catEff)+'</span>' : '';
       h+='<div style="background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04)">'+
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
-          '<span style="font-size:15px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums">'+hh+':00</span>'+
+          '<span style="font-size:15px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums">'+gwHHM(hh)+'</span>'+
           '<span style="font-size:13.5px;font-weight:700;color:var(--ink)">'+esc(sc.l||"수련")+'</span>'+catBadge+
           '<span style="flex:1"></span>'+
           '<span style="font-size:11.5px;color:var(--sub)">출석 <b style="color:var(--blue)">'+st.a+'</b>/'+totalPlaced+'</span>'+
@@ -45626,8 +45633,8 @@ function _tbSlots(day, W, sch){
 function _tbPickSlot(slots){
   if(!slots.length) return "";
   if(state.tbSlotDate===today() && state.tbSlot && slots.some(function(s){ return s.key===state.tbSlot; })) return state.tbSlot;
-  var nowH=new Date().getHours(), pick=slots[0].key;
-  slots.forEach(function(s){ if(s.hh<=nowH) pick=s.key; });   /* 지금 진행 중(또는 직전) 수업 */
+  var _nd=new Date(), nowM=_nd.getHours()*60+_nd.getMinutes(), pick=slots[0].key;
+  slots.forEach(function(s){ if(gwSlotMin(s.hh)-10<=nowM) pick=s.key; });   /* [광교 G6] 수업 10분 전부터 */   /* 지금 진행 중(또는 직전) 수업 */
   return pick;
 }
 /* ── [R4.427] 출석 잠금(시간별·오늘만, 이 기기 저장) — 체크가 끝난 수업은 얼굴을 눌러도 출석이 안 바뀜. 📝 특기사항은 계속 입력 가능 ── */
@@ -45748,14 +45755,14 @@ function renderTablet(){
         slots.map(function(s){
           var on=(s.key===sel), now=(s.hh===nowH), lk=!!locks[s.key];
           return '<button class="tbSlot'+(on?' on':'')+'" onclick="tbSelSlot(\''+s.key+'\')">'+
-            '<div style="display:flex;align-items:center;gap:6px"><span style="font-size:18px;font-weight:900;font-variant-numeric:tabular-nums">'+s.hh+':00</span>'+(now?'<span style="font-size:9.5px;font-weight:900;background:'+(on?'rgba(255,255,255,.25)':'var(--redSoft)')+';color:'+(on?'#fff':'var(--red)')+';border-radius:6px;padding:1px 5px">지금</span>':'')+(lk?'<span style="font-size:12px">🔒</span>':'')+'</div>'+
+            '<div style="display:flex;align-items:center;gap:6px"><span style="font-size:18px;font-weight:900;font-variant-numeric:tabular-nums">'+gwHHM(s.hh)+'</span>'+(now?'<span style="font-size:9.5px;font-weight:900;background:'+(on?'rgba(255,255,255,.25)':'var(--redSoft)')+';color:'+(on?'#fff':'var(--red)')+';border-radius:6px;padding:1px 5px">지금</span>':'')+(lk?'<span style="font-size:12px">🔒</span>':'')+'</div>'+
             '<div class="tbSlotN" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px">'+esc(s.label)+(s.cat!=="수업"?' · '+esc(s.cat):'')+'</div>'+
             '<div class="tbSlotN">출석 <b>'+s.att+'</b> / '+s.placed+'</div>'+
           '</button>'; }).join('')+
       '</div>';
       var cur=slots.find(function(s){ return s.key===sel; })||slots[0];
       var c=cur.c, locked=!!locks[cur.key];
-      h+='<div style="display:flex;align-items:center;gap:10px;margin:4px 2px 10px;flex-wrap:wrap"><span style="font-size:20px;font-weight:900;color:var(--brand)">'+cur.hh+':00 '+esc(cur.label)+'</span>'+
+      h+='<div style="display:flex;align-items:center;gap:10px;margin:4px 2px 10px;flex-wrap:wrap"><span style="font-size:20px;font-weight:900;color:var(--brand)">'+gwHHM(cur.hh)+' '+esc(cur.label)+'</span>'+
          '<span style="font-size:13.5px;color:var(--sub)">출석 <b style="color:var(--blue)">'+cur.att+'</b> / '+cur.placed+'명</span><span style="flex:1"></span>'+
          (locked
            ? '<span style="font-size:12.5px;font-weight:800;color:#92400E;background:#FEF3C7;border-radius:9px;padding:5px 10px">🔒 출석 잠금 중 · 얼굴을 눌러도 바뀌지 않음 · 💬 질문 대답은 입력 가능</span>'+
@@ -46064,6 +46071,82 @@ function gwExamFeeOf(nm){
       return r; }; window.saveStuM=saveStuM; }
 })();
 /* ═══════════ G5 끝 ═══════════ */
+
+</script>
+<script>
+/* ═══════════ 더빛광교 규칙 G6 — 수련 시간표를 운영규정 제10조에 맞춤 · build_gwanggyo.py 가 문서 끝(G5 다음)에 덧붙임 ═══════════
+   칸 열쇠(mon-14 같은 「시」 번호)는 그대로 쓰고, 칸마다 광교 수업·시각을 붙인다(저장 형식 그대로):
+   10 맘스부 10:00~11:00 · 14 1부 2:30~3:20 · 15 2부 3:30~4:20 · 16 3부 4:30~5:20 · 17 4부 5:30~6:20
+   18 승급심사 6:30~7:00(넷째 주 월·화·수) · 19 초등부 시범단 7:00~8:30 · 20 청소년·성인부(월·수·금 8:30~9:30) / 청소년 시범단(화·목 8:30~10:00)
+   토요일 수업 없음. 칸 시각·글자 함수(gwSlotMin·gwHHM·gwSlotRange·slotHours)는 원래 slotHours 자리에서 먼저 만들어진다. */
+(function(){
+  function _f(n){ return typeof window[n]==='function'; }
+  window.gwSeedCells=function(){ var c={}, D=['mon','tue','wed','thu','fri'];
+    D.forEach(function(d){
+      c[d+'-10']={l:'맘스부',c:'수업'};
+      c[d+'-14']={l:'1부',c:'수업'}; c[d+'-15']={l:'2부',c:'수업'}; c[d+'-16']={l:'3부',c:'수업'}; c[d+'-17']={l:'4부',c:'수업'};
+      c[d+'-18']=(d==='mon'||d==='tue'||d==='wed')? {l:'승급심사 (넷째 주)',c:'심사'} : {l:'',c:'없음'};
+      c[d+'-19']={l:'초등부 시범단',c:'시범단'};
+      c[d+'-20']=(d==='tue'||d==='thu')? {l:'청소년 시범단',c:'시범단'} : {l:'청소년·성인부',c:'수업'};
+    });
+    return c; };
+  if(_f('seedSchedule')){ var _ss0=seedSchedule; seedSchedule=function(){ var o=_ss0(); o.cells=gwSeedCells(); return o; }; }
+  /* 한 번도 고치지 않은(cellsT 없음) 원본 기본 시간표가 저장돼 있으면 광교 기본 시간표로 바꾼다 — 관리자 기기 · 명단(출석 창고)을 받은 뒤에만 */
+  function _isOldSeed(sc){ var c=(sc&&sc.cells)||{}; return !!(c['mon-13'] && c['mon-13'].l==='1:1 개인레슨' && c['mon-14'] && c['mon-14'].l==='class 1'); }
+  var _mig=setInterval(function(){ try{
+      if(!state.attPulledOnce || !state.schedule) return;
+      clearInterval(_mig);
+      if(myRole()!=='admin' || Number(state.schedule.cellsT)>0 || !_isOldSeed(state.schedule)) return;
+      state.schedule.cells=gwSeedCells();
+      schedTouch('cellsT'); try{ render(); }catch(e){}
+      try{ toast('📅 수련 시간표를 더빛광교 기본(맘스부·1~4부·시범단·청소년성인부)으로 맞췄습니다'); }catch(e){}
+    }catch(e){} }, 1500);
+
+  /* 학부모 시간표 이미지 — 광교 칸으로 */
+  if(_f('_ttModelFromSchedule')) _ttModelFromSchedule=function(){
+    var cells=(state.schedule&&state.schedule.cells)||{}, D=['mon','tue','wed','thu','fri'];
+    var _lb=function(k){ var c=cells[k]||{}; if(c.c==='심사'||c.c==='없음') return ''; return (c.l||'').trim(); };
+    var rows=slotHours('mon').map(function(hh){ var c5=D.map(function(d){ return _lb(d+'-'+hh); });
+      return { t:(hh===20? '8:30~' : gwSlotRange(hh,'mon')), c:c5 }; }).filter(function(r){ return r.c.some(function(x){ return x; }); });
+    return { banner:null, rows:rows, sat:[] }; };
+  if(_f('_ttDefaultModel')) _ttDefaultModel=function(){ return JSON.parse(JSON.stringify(_ttModelFromSchedule())); };
+
+  /* 승급심사 예상 횟수 — 하루 2시간(두 타임) 수련한 날은 2회(제22조 ②) */
+  window.gwSlotsPerDay=function(name){ var per={}, wks=Object.keys(state.weeks||{}).filter(function(w){ return w<=today(); }).sort().slice(-8);
+    wks.forEach(function(wk){ var w=state.weeks[wk]; if(!w||!w.cells) return; var cnt={};
+      for(var key in w.cells){ if(typeof cellIsContest==='function' && cellIsContest(w.cells[key], key)) continue;
+        var lv=w.cells[key].lv||[], hit=false; for(var i=0;i<3&&!hit;i++){ if((lv[i]||[]).some(function(n){ return String(n||'').trim()===name; })) hit=true; }
+        if(hit){ var d=key.split('-')[0]; cnt[d]=(cnt[d]||0)+1; } }
+      for(var d in cnt){ (per[d]=per[d]||[]).push(cnt[d]); } });
+    var out={}; for(var d2 in per){ var a=per[d2].slice().sort(function(x,y){ return x-y; }); out[d2]=Math.max(1, Math.min(2, a[Math.floor(a.length/2)])); }
+    return out; };
+  if(_f('remainSessions')) remainSessions=function(name, examDate){
+    if(!examDate) return 0; var days=regularDaysOf(name); if(!days.length) return 0; var per=gwSlotsPerDay(name);
+    var n=0, d=addDays(today(),1), guard=0;
+    while(d<=examDate && guard++<400){ var wd=["sun","mon","tue","wed","thu","fri","sat"][new Date(d+"T00:00:00").getDay()];
+      if(days.indexOf(wd)>-1){ var wkMon=addDays(d, -((new Date(d+"T00:00:00").getDay()+6)%7)); if(!dayIsOff(wkMon, wd)) n+=(per[wd]||1); }
+      d=addDays(d,1); }
+    return n; };
+})();
+/* ═══════════ G6 끝 ═══════════ */
+
+/* ═══════════ 장기결석 — 프로그램을 쓰기 시작한 날(첫 출석 체크) 기준 (2026-11-20 팀장님: 「처음 만드는 프로그램이니 아직 판정하지 않는 게 맞다」) ═══════════
+   원본은 출석·배치 기록이 없으면 등록일이 4주 전이면 장기결석으로 봐서, 출석 기록이 없는 광교 재원생이 모두 장기결석으로 나왔다.
+   광교판: 첫 출석 체크가 4주가 안 됐으면 자동 판정 안 함(지도진이 수동으로 지정한 것만). 그 뒤에도 기록 없는 학생은 「첫 출석 체크일」부터 4주로 센다. */
+(function(){
+  var _ps=null, _psT=0;
+  window.gwProgStart=function(){ if(_ps!==null && Date.now()-_psT<60000) return _ps; var best='';
+    try{ for(var wk in (state.weeks||{})){ var w=state.weeks[wk]; if(!w||!w.cells) continue;
+      for(var key in w.cells){ var mk=w.cells[key].marks||{}; for(var n in mk){ if(mk[n] && mk[n].s==='출석'){ var d=addDays(wk, DAY_IDX[key.split('-')[0]]||0); if(!best||d<best) best=d; } } } } }catch(e){}
+    _ps=best; _psT=Date.now(); return best; };
+  if(typeof window.isLongAbsent==='function'){ var _la0=isLongAbsent; isLongAbsent=function(name){
+    if(!_la0(name)) return false;
+    var D=_laData(), last=D.lastAtt[name], m=(state.laManual||{})[name], cut=addDays(today(),-28);
+    if(m && m.on && (!last || last<m.d)) return true;      /* 지도진 수동 지정 */
+    var ps=gwProgStart(); if(!ps || ps>=cut) return false;  /* 출석 체크를 시작한 지 4주가 안 됨 */
+    if(last) return last<cut;
+    var pf=D.placedFirst[name]; return ((pf && pf>ps)? pf : ps) < cut; }; }
+})();
 
 </script>
 </body>
