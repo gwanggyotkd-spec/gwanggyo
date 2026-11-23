@@ -15042,7 +15042,7 @@ function bankPanelRender(){
   var head=function(t, sub){ return '<div style="position:sticky;top:0;z-index:1;background:#F1F5F9;padding:6px 12px;font-size:12px;font-weight:800;color:#475569;border-bottom:1px solid #E2E8F0">'+t+(sub?' <span style="font-weight:600;color:#94A3B8">'+sub+'</span>':'')+'</div>'; };
   var body='';
   if(!vs.length && _q) body='<div style="padding:10px 14px;font-size:12.5px;color:#94A3B8;background:#F8FAFC">올린 통장 내역에 「'+esc(_q)+'」 줄이 없습니다 — 아래는 회계 기록</div><div style="border-top:6px solid #E2E8F0">'+bankSearchHtml()+'</div>';   /* [R4.749] */
-  else if(!vs.length) body='<div style="padding:36px 12px;text-align:center;color:#94A3B8;font-size:13.5px;line-height:1.6">'+((state.bankRows||[]).length?'이 조건의 줄이 없습니다.':'아직 올린 결제 내역이 없습니다.<br>[📂 엑셀 올리기]로 농협·결제선생·성남사랑 엑셀을 올려 주세요.')+'</div>';
+  else if(!vs.length) body='<div style="padding:36px 12px;text-align:center;color:#94A3B8;font-size:13.5px;line-height:1.6">'+((state.bankRows||[]).length?'이 조건의 줄이 없습니다.':'아직 올린 결제 내역이 없습니다.<br>[📂 엑셀 올리기]로 계좌·결제선생 엑셀을 올려 주세요.')+'</div>';
   else if(_q){   /* [R4.749] 검색: 지금 처리할 통장 줄 → 그 수련생 회계 기록(미납·납부 전부) → 처리 끝난 통장 줄 → 제외 */
     var A1=vs.filter(function(v){ return v.stt==='todo'; }), C1=vs.filter(function(v){ return v.stt==='done'; }), D1=vs.filter(function(v){ return grp(v)==='skip'; });
     body=head('📌 할 일 — 처리할 통장 줄 '+A1.length+'건', A1.length?'체크하거나 [💳 청구 골라 납부]·⋯':'')+(A1.length?A1.map(card).join(''):'<div style="padding:10px 14px;font-size:12.5px;color:#94A3B8">처리할 통장 줄이 없습니다</div>')+
@@ -15059,7 +15059,7 @@ function bankPanelRender(){
     }
   } else body=vs.map(card).join('');
   if(_q) body='<div style="padding:8px 12px;background:#EFF6FF;border-bottom:1px solid #BFDBFE;font-size:12.5px;color:#1E40AF">🔍 「'+esc(_q)+'」 전체 내역 — 통장 줄(할 일·끝남·제외)과 회계 기록(미납·납부)을 기간 상관없이 모두 보여 줍니다 · 줄의 ⋯에서 고치기</div>'+body;
-  var help=(state.bankHelp || !(state.bankRows||[]).length) ? '<div style="margin-top:8px;padding:8px 10px;background:#F8FAFC;border-radius:8px;font-size:12.5px;color:#475569;line-height:1.6">① [📂 엑셀 올리기]로 농협·결제선생·성남사랑 엑셀(여러 개 가능, 종류는 자동 구분)을 올리면 미납 청구와 자동으로 맞춰요<br>② 이름·금액이 맞는 줄은 체크돼 있어요 → 맨 아래 버튼으로 한 번에 납부 처리<br>③ 안 맞는 줄은 [💳 청구 골라 납부]로 어느 청구의 돈인지 고르거나, ⋯ 에서 회계 칸 채우기·제외<br><span style="color:#94A3B8">카드·성남사랑 업체 정산, 기관 입금은 자동 제외 · 줄 아래 📍를 누르면 원본 위치</span></div>' : '';
+  var help=(state.bankHelp || !(state.bankRows||[]).length) ? '<div style="margin-top:8px;padding:8px 10px;background:#F8FAFC;border-radius:8px;font-size:12.5px;color:#475569;line-height:1.6">① [📂 엑셀 올리기]로 계좌·결제선생 엑셀(여러 개 가능, 종류는 자동 구분)을 올리면 미납 청구와 자동으로 맞춰요<br>② 이름·금액이 맞는 줄은 체크돼 있어요 → 맨 아래 버튼으로 한 번에 납부 처리<br>③ 안 맞는 줄은 [💳 청구 골라 납부]로 어느 청구의 돈인지 고르거나, ⋯ 에서 회계 칸 채우기·제외<br><span style="color:#94A3B8">카드·성남사랑 업체 정산, 기관 입금은 자동 제외 · 줄 아래 📍를 누르면 원본 위치</span></div>' : '';
   _bkPanelPaint(pn, '<div style="padding:0 12px 10px;border-bottom:1px solid #E2E8F0;background:#fff">'+
       (_q?'<div style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12.5px;color:#475569">통장 줄 · 할 일 <b style="color:#B45309">'+sum.todo[0]+'</b> · 끝남 <b>'+sum.done[0]+'</b> · 제외 <b>'+sum.skip[0]+'</b><span style="flex:1"></span><a href="javascript:void(0)" onclick="state.bankQ=\'\';bankPanelRender()" style="color:#64748B">검색 지우고 목록으로</a></div></div>':'')+
       (_q?'':(function(){ var _A=bankAuditData(); return _bkModeBar(_A.list.length, _A.nCand); })()+
@@ -32259,7 +32259,7 @@ function _renderSettingsHub(){
   var ov=document.createElement("div"); ov.id="setHubOv";
   ov.style.cssText="position:fixed;inset:0;background:rgba(27,37,52,.55);z-index:2147483600;display:flex;align-items:flex-start;justify-content:center;padding:26px 16px;overflow:auto";
   ov.onclick=function(ev){ if(ev.target===ov) closeSettingsHub(); };
-  ov.innerHTML='<style>.gwSetGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 16px;align-items:start}.gwSetGrid>div{min-width:0}#setHubBox{max-width:880px}@media(max-width:820px){.gwSetGrid{grid-template-columns:1fr}#setHubBox{max-width:520px}}</style>'+
+  ov.innerHTML='<style>.gwSetGrid{column-count:2;column-gap:16px}.gwSetGrid>div{break-inside:avoid;min-width:0}#setHubBox{max-width:880px}@media(max-width:820px){.gwSetGrid{column-count:1}#setHubBox{max-width:520px}}</style>'+
   '<div id="setHubBox" style="background:#F7F7F5;border-radius:16px;width:100%;padding:8px 20px 14px" onclick="event.stopPropagation()">'+
     '<div style="display:flex;align-items:center;min-height:50px;margin-bottom:6px">'+
       '<div style="flex:1;font-size:17px;font-weight:800">설정</div>'+
