@@ -12462,6 +12462,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.859.1", "d": "2026-11-25", "t": "시간표보기 — 고친 내용이 그대로 남게", "L": ["「🖼 시간표보기 → ✏ 내용 수정」에서 맘스부(오전 10시) 줄을 고치고 저장하면 원래대로 돌아가던 문제를 고쳤습니다", "설정과 다르게 고친 칸은 저장할 때 한 번 물어본 뒤, 학부모용 이미지에만 그대로 남습니다 (수련시간표 설정은 그대로)", "이미지 제목이 오른쪽 「○○부터 적용」 날짜와 겹치지 않게 했고, 토요일 칸 안내를 우리 도장 수업 안내로 바꿨습니다"]},
   {"v": "v13.859", "d": "2026-11-24", "t": "운영규정 개정에 맞춤", "L": ["승급심사가 매월 넷째 주 월·화·수·목 나흘로 늘고, 하루 정원이 25명이 되었습니다", "미납 안내는 1주가 지나면 1차, 2주가 지나면 최종 안내로 앞당겼습니다", "도복·가방·국기원 재응시 심사비가 새 금액으로 바뀌었고, 결제 수단에 「바우처」·「비대면」이 생겼습니다", "기타수입을 여러 건 한 번에 지울 수 있습니다"]},
   {"v": "v13.846", "d": "2026-11-23", "t": "만료 표시에 홀딩 반영 외", "L": ["홀딩을 승인받은 수련생은 명단의 「임박·만료」 표시와 학적부·홈 만료 알림에도 홀딩만큼 늘어난 만료가 보입니다 (수련비 청구 판정은 그대로)", "수련비 청구 창에 「➖ 보강 대신 차감」이 생겼습니다 — 다쳐서 오래 쉬어 보강이 어려우면 보강 횟수만큼 수련비에서 빼 줍니다", "확인·안내 창이 청구 창 뒤에 가려지던 문제, 한글을 지울 때 앞 글자까지 낱자로 지워지던 문제를 고쳤습니다"]},
   {"v": "v13.842", "d": "2026-11-23", "t": "원생 등록 — 유품자는 급까지", "L": ["원생 등록 창에서 「유품자」를 고르고 급 칸을 비워 두면, 저장하기 전에 「급을 골라 주세요」라고 알려 드립니다(예: 1품 12급이면 급 칸에 12)", "새로 등록할 때는 급을 적어야 저장되고, 이미 있는 수련생을 고칠 때는 급 없이 그대로 저장할지 물어봅니다", "1단·2단처럼 단만 적는 경우는 지금처럼 급 없이 저장됩니다"]},
@@ -20060,7 +20061,7 @@ function _generateBriefing(year, auto){
     (methodRows?'<h2>7. 결제 방법별 매출</h2>'+
     '<table><tr><th>방법</th><th style="text-align:right">매출</th><th style="text-align:right">비중</th></tr>'+methodRows+'</table>'+
     '<div class="insight"><b>결제 방법 트렌드 인사이트</b><br>'+
-    '· 성남사랑모바일(성남/성+카/성+계) 비중이 크면 지역 결속 마케팅 효과 확인.<br>'+
+    '· 용인페이(지역화폐) 비중이 크면 지역 결속 마케팅 효과 확인.<br>'+
     '· 카드·계좌 비중은 결제 편의성 지표. 계좌 비중 과다 시 결제 프로세스 개선 필요.'+
     '</div>':'')+
 
@@ -20093,7 +20094,7 @@ function _generateBriefing(year, auto){
     '<b>4. 성인 반은 별도 전략 필요</b><br>'+
     '성인은 학사 일정과 무관하나 지속성이 낮습니다. 소셜(그룹 클래스), 건강(스트레스 해소·다이어트), 자기계발(품·단 도전) 세 축의 프로그램이 유지율을 결정합니다.<br><br>'+
     '<b>5. 지역 밀착 마케팅의 힘</b><br>'+
-    '태권도장은 상권이 좁은 로컬 비즈니스입니다. 지역 유치원·초등학교·아파트 커뮤니티와의 연계, 성남사랑모바일 같은 지역화폐 활용이 신규 유입의 지속 통로입니다.'+
+    '태권도장은 상권이 좁은 로컬 비즈니스입니다. 지역 유치원·초등학교·아파트 커뮤니티와의 연계, 용인페이 같은 지역화폐 활용이 신규 유입의 지속 통로입니다.'+
     '</div>';
   if(auto==="html") return bodyHtml;   /* [R4.176] 연간브리핑 탭 — 화면 표시용 본문만 반환 */
   html+=bodyHtml+
@@ -33063,7 +33064,7 @@ function ttImgDraw(cv, model){
   }
   /* 타이틀 */
   ctx.textAlign='center'; ctx.textBaseline='alphabetic';
-  ctx.fillStyle='#1F2E9E'; ctx.font='900 '+(52*SC)+'px '+F;
+  ctx.fillStyle='#1F2E9E'; var _gwTf=52*SC; ctx.font='900 '+_gwTf+'px '+F; while(_gwTf>30*SC && ctx.measureText('THE LIGHT GWANGGYO T.K.D  Class Schedule').width>W-2*(pad+250*SC)){ _gwTf-=1*SC; ctx.font='900 '+_gwTf+'px '+F; }
   ctx.fillText('THE LIGHT GWANGGYO T.K.D  Class Schedule', W/2, headH*0.56);
   ctx.fillStyle='#6B7280'; ctx.font='800 '+(17*SC)+'px '+F;
   ctx.fillText('더빛광교태권도장 수련시간표', W/2, headH*0.84);
@@ -33225,11 +33226,12 @@ function ttImgDraw(cv, model){
     var rw=satTimeW+satColW, rh=syEnd-sy;
     ctx.fillStyle='#E9DFF6'; ctx.fillRect(satLeft,sy,rw,rh);
     ctx.strokeStyle=GRID; ctx.lineWidth=1*SC; ctx.strokeRect(satLeft,sy,rw,rh);
-    var L=['☆ 킨더: 미취학 아동 5세~7세',
-           '☆ 초등주니어: 초등학교 1,2,3학년',
-           '☆ 초등시니어: 초등학교 4,5,6학년',
-           '☆ 청소년: 중·고등학교 1,2,3학년',
-           '☆ 성인: 만19세 이상'];
+    var L=['☆ 토요일은 수업이 없습니다',
+           '☆ 1부~4부: 전체 · 매월 마지막 주 신청',
+           '☆ 맘스부: 맘스 성인부',
+           '☆ 승급심사: 매월 넷째 주 월~목 6:30~7:00',
+           '☆ 청소년 시범단: 화·목 8:30~10:00',
+           '☆ 청소년·성인부: 월·수·금 8:30~9:30'];
     ctx.fillStyle='#3F2A6E'; ctx.textAlign='left';
     var lh0=Math.min(30*SC, (rh-20*SC)/L.length);
     var ty=sy+(rh-lh0*L.length)/2+lh0*0.72;
@@ -33332,7 +33334,7 @@ window.ttOvBuildEditor=function(){
     '<button onclick="ttOvLoadSchedule()" style="font-size:12px;font-weight:700;border:1px solid #C9D8F2;background:#F4F7FF;color:#1B5FAF;border-radius:8px;padding:5px 10px;cursor:pointer">설정과 똑같이 맞추기</button>'+
     '<button onclick="ttOvApply()" style="font-size:12.5px;font-weight:800;border:1px solid #1E8E3E;background:#1E8E3E;color:#fff;border-radius:8px;padding:5px 14px;cursor:pointer">✔ 적용하고 저장</button>'+
   '</div>';
-  h+='<div style="display:grid;grid-template-columns:70px 110px repeat(5,1fr);gap:4px;align-items:start;font-size:11px">';
+  h+='<div style="display:grid;grid-template-columns:58px 96px repeat(5,minmax(96px,1fr));gap:4px;align-items:start;font-size:11px">';
   h+='<div></div><div style="font-weight:800;text-align:center">Time</div>'+['월','화','수','목','금'].map(function(d){return '<div style="font-weight:800;text-align:center">'+d+'</div>';}).join('');
   h+='<div style="font-weight:700;color:#6B7280;padding-top:7px">안내줄</div>';
   h+='<div><input '+inp+' data-tt="bt" value="'+_ttEsc(M.banner?M.banner.t:'')+'" placeholder="시간"></div>';
@@ -44124,7 +44126,7 @@ function render(){
       h+='<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:6px"><button class="chip sm" style="color:#1E7B3C;border-color:#A9DEC3;background:#F4FBF6;font-weight:800" onclick="openPayCheckM(\'승급심사\')">✅ 체크 수납 (심사·행사·대회)</button></div>'+
         '<div class="searchWrap"><span class="searchIcon">🔍</span>'+
         '<input class="input searchBig" placeholder="수련생·학부형 이름 또는 전화 뒷 4자리'+((typeof isMacPlatform==="function"&&isMacPlatform())?" (⌘F)":" (Ctrl+F)")+'" value="'+esc(state.query)+'" oninput="setQuery(this.value)" onkeydown="if(event.key===\'Enter\'){event.preventDefault(); var _el=this; setTimeout(function(){ if(_el.value!==state.query) setQuery(_el.value); if(window.__pickFirst!=null) pick(window.__pickFirst); },(event.isComposing||event.keyCode===229)?40:0);}"></div>'+
-        '<div style="font-size:11px;color:var(--sub);margin:4px 2px 0">수련생 이름 · 학부형 이름 · 학부형 전화 <b>뒷 4자리</b>로 검색됩니다 (성남사랑 등) · <b>Enter</b>=첫 번째 결과 바로 선택. 같은 이름이 여러 명이면 옆 <b style="color:#B45309">보호자 태그</b>로 구분하세요.</div>'+
+        '<div style="font-size:11px;color:var(--sub);margin:4px 2px 0">수련생 이름 · 학부형 이름 · 학부형 전화 <b>뒷 4자리</b>로 검색됩니다 (용인페이 등) · <b>Enter</b>=첫 번째 결과 바로 선택. 같은 이름이 여러 명이면 옆 <b style="color:#B45309">보호자 태그</b>로 구분하세요.</div>'+
         '<div id="picklist"></div>';
     }
     h+='</div>';
@@ -46503,13 +46505,29 @@ function gwExamFeeOf(nm){
     }catch(e){} }, 1500);
 
   /* 학부모 시간표 이미지 — 광교 칸으로 */
+  /* [v13.859.1] 줄은 광교 칸 모두(빈 줄 포함)를 둔다 — 빈 줄을 빼 두면 편집 칸에도 없어, 승급심사 6:30 줄처럼 설정이 빈 줄에 적은 글이
+     저장 뒤 사라졌다. 빈 줄은 그림을 그릴 때만 뺀다(아래 ttImgDraw). 시간표를 아직 못 받은 기기는 광교 기본 칸으로 */
   if(_f('_ttModelFromSchedule')) _ttModelFromSchedule=function(){
-    var cells=(state.schedule&&state.schedule.cells)||{}, D=['mon','tue','wed','thu','fri'];
+    var sc=state.schedule, cells=(sc&&sc.cells&&Object.keys(sc.cells).length)? sc.cells : gwSeedCells(), D=['mon','tue','wed','thu','fri'];
     var _lb=function(k){ var c=cells[k]||{}; if(c.c==='심사'||c.c==='없음') return ''; return (c.l||'').trim(); };
     var rows=slotHours('mon').map(function(hh){ var c5=D.map(function(d){ return _lb(d+'-'+hh); });
-      return { t:(hh===20? '8:30~' : gwSlotRange(hh,'mon')), c:c5 }; }).filter(function(r){ return r.c.some(function(x){ return x; }); });
+      return { t:(hh===20? '8:30~' : gwSlotRange(hh,'mon')), c:c5 }; });
     return { banner:null, rows:rows, sat:[] }; };
+  if(_f('ttImgDraw')){ var _gwDraw=ttImgDraw; ttImgDraw=function(cv, model){ var m=JSON.parse(JSON.stringify(model||_ttModel()));
+    m.rows=(m.rows||[]).filter(function(r){ return (r.c||[]).some(function(x){ return String(x||'').trim(); }); });
+    return _gwDraw(cv, m); }; }
+  if(_f('_ttSetLabel')){ _ttSetLabel=function(key){ var sc=state.schedule, cells=(sc&&sc.cells&&Object.keys(sc.cells).length)? sc.cells : gwSeedCells(), c=cells[key]||{};
+    if(c.c==='심사'||c.c==='없음') return ''; return (c.l||'').trim(); }; }
   if(_f('_ttDefaultModel')) _ttDefaultModel=function(){ return JSON.parse(JSON.stringify(_ttModelFromSchedule())); };
+  /* [v13.859.1] 「시간표보기」에서 고친 칸이 저장 뒤 되돌아가던 것 — 원본은 오후 1~9시 줄만 「설정과 다른 칸」으로 살펴서,
+     광교의 맘스부(오전 10시) 줄을 고치면 예외로 남지 않고 다시 설정 글자로 덮였다. 광교 칸(slotHours)을 모두 살핀다.
+     시간 글자는 첫 숫자로 읽는다(「오전 10:00」·「오후 2:30」도) — 10~12는 오전·낮 그대로, 1~9는 오후 */
+  if(_f('_ttHour')) _ttHour=function(t, sat){ var m=String(t||'').match(/\d+/), h=m? parseInt(m[0],10) : 0; if(!h) return 0;
+    if(sat) return h<9? h+12 : h; return (h>=10 && h<=12)? h : (h<=9? h+12 : h); };
+  if(_f('_ttDiffs')) _ttDiffs=function(M){ var out=[], H=slotHours('mon');
+    (M.rows||[]).forEach(function(r){ var hh=_ttHour(r.t); if(H.indexOf(hh)<0) return;
+      TT_DAYS.forEach(function(d,j){ var k=d+'-'+hh, st=_ttSetLabel(k), im=(r.c&&r.c[j])||''; if(_ttNz(im)!==_ttNz(st)) out.push({k:k, day:TT_DAY_KO[d], t:r.t, set:st, img:String(im).trim()}); }); });
+    return out; };
 
   /* 승급심사 예상 횟수 — 하루 2시간(두 타임) 수련한 날은 2회(제22조 ②) */
   window.gwSlotsPerDay=function(name){ var per={}, wks=Object.keys(state.weeks||{}).filter(function(w){ return w<=today(); }).sort().slice(-8);
