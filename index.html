@@ -12462,6 +12462,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.859.4", "d": "2026-11-25", "t": "수련 신청 — 문자 대신 링크로", "L": ["학부모님이 신청 링크에서 요일·시간과 함께 등·하원 방법(차량은 탑승 장소), 수련비 납부 방법, 도장에 전할 말까지 남깁니다 — 「지난 달과 같게」 단추 하나로도 됩니다", "관장님은 신청 링크에 이름 「관장」과 관장 확인 코드로 들어가면 신청 정리표·미신청 명단·공지 문자를 보고 복사할 수 있습니다", "「📥 수련신청 결과 불러오기」 미리 보기에 등·하원·납부·전할 말이 함께 보이고, 등록 횟수와 신청이 다른 아이를 알려 드립니다(직접 등·하원 표시도 맞출 수 있습니다)"]},
   {"v": "v13.859.3", "d": "2026-11-25", "t": "처음엔 꼭 필요한 메뉴만", "L": ["처음에는 오늘브리핑 · 수련생관리 · 심사평가 · 회계관리(수련비)만 보이게 정리했습니다", "차량운행·업무관리·측정관리·캘린더·학부모앱과 매출·결제 내역 정리 같은 재무 메뉴는 잠시 감췄습니다 — 자료는 그대로이고, 필요할 때 차례대로 열어 드립니다", "학부모 수련 신청 링크에서 아이 이름 「체험」, 번호 「0000」으로 들어가면 학부모 화면을 미리 눌러 보실 수 있습니다(저장되지 않음)"]},
   {"v": "v13.859.2", "d": "2026-11-25", "t": "입회비는 2027년 3월 1일 등록부터", "L": ["입회비 20,000원은 2027년 3월 1일 이후 새로 등록하는 아이부터 받습니다 — 그 전에 등록하면 첫 등록 창의 입회비가 0원으로 들어갑니다(필요하면 직접 넣을 수 있습니다)", "운영규정 제6조·부칙도 같은 내용으로 고쳤습니다"]},
   {"v": "v13.859.1", "d": "2026-11-25", "t": "시간표보기 — 고친 내용이 그대로 남게", "L": ["「🖼 시간표보기 → ✏ 내용 수정」에서 맘스부(오전 10시) 줄을 고치고 저장하면 원래대로 돌아가던 문제를 고쳤습니다", "설정과 다르게 고친 칸은 저장할 때 한 번 물어본 뒤, 학부모용 이미지에만 그대로 남습니다 (수련시간표 설정은 그대로)", "이미지 제목이 오른쪽 「○○부터 적용」 날짜와 겹치지 않게 했고, 토요일 칸 안내를 우리 도장 수업 안내로 바꿨습니다"]},
@@ -21908,7 +21909,7 @@ function renderScheduleTab(){
     '<button class="chip" style="color:var(--blue)" onclick="addCoach()">＋ 추가</button></div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:6px">여기 명단이 각 시간의 지도진 선택 목록이 됩니다. (변경 후 아래 [시간표 저장])</div>'+
     '</div>'+
-    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 맘스부 10:00 · 1~4부 2:30~6:20 · 승급심사 6:30 · 시범단 7:00 · 청소년·성인 8:30) <button onclick="gwSignupImport()" title="수련신청 시트의 「신청현황」 탭을 엑셀로 받아 고르면 그 달 정규시간 변경으로 넣습니다" style="margin-left:8px;border:1.5px solid #182682;color:#182682;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📥 수련신청 결과 불러오기</button> <button onclick="gwExamRecExport()" title="다음 심사 추천 명단을 수련신청 시트 「심사추천」 탭 모양 엑셀로 받습니다" style="margin-left:4px;border:1.5px solid #B45309;color:#B45309;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📤 심사추천 명단 내보내기</button></div>'+
+    '<div class="card"><div style="font-size:15px;font-weight:900;margin-bottom:4px">평일 시간표 (월~금 · 맘스부 10:00 · 1~4부 2:30~6:20 · 승급심사 6:30 · 시범단 7:00 · 청소년·성인 8:30) <button onclick="gwRosterPush()" title="재원생 명단(이름·보호자 전화 뒷 4자리)을 학부모 신청 링크로 보냅니다 — 새로 온 아이가 있으면 신청 안내 전에 한 번" style="margin-left:8px;border:1.5px solid #1E7B3C;color:#1E7B3C;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📤 신청 명단 보내기</button> <button onclick="gwSignupImport()" title="학부모 신청 링크에 들어온 신청(요일·시간·등하원·납부)을 바로 받아 미리 본 뒤 그 달 정규시간 변경으로 넣습니다" style="margin-left:4px;border:1.5px solid #182682;color:#182682;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📥 수련신청 결과 불러오기</button> <button onclick="gwExamRecExport()" title="다음 승급심사 추천 명단을 학부모 신청 링크로 보냅니다 — 명단에 있는 아이에게만 「승급심사 신청」이 열립니다" style="margin-left:4px;border:1.5px solid #B45309;color:#B45309;background:#fff;border-radius:8px;padding:4px 10px;font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit">📤 심사추천 명단 보내기</button> <button onclick="gwApplyCodeSet()" title="학부모 신청 링크의 관장 확인 코드 — 이 기기에 한 번 넣으면 기억합니다" style="margin-left:4px;border:1px solid #CBD5E1;color:#475569;background:#fff;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;font-family:inherit">🔑</button></div>'+
     '<div style="font-size:11.5px;color:var(--sub);margin-bottom:10px">각 시간의 반 이름과 종류(수업·심사·시범단·대회준비)를 정합니다. 수련시간표의 바탕이 됩니다.</div>'+
     '<div style="overflow-x:auto"><table style="border-collapse:collapse;width:100%"><tr style="background:#F2F4F7"><th style="font-size:11.5px;color:var(--sub);padding:6px 4px;border-radius:6px 0 0 6px">시간</th>'+
     ["월","화","수","목","금"].map(function(d){return '<th style="font-size:13.5px;font-weight:900;padding:6px 4px">'+d+'</th>';}).join('')+'</tr>';
@@ -46636,6 +46637,21 @@ function gwExamFeeOf(nm){
     Object.keys(by).forEach(function(k){ var p=k.split('|'); if(p[0]!==ym0) return; out.push({n:p[1], slots:by[k].sort()}); });
     out.sort(function(a,b){ return a.n.localeCompare(b.n,'ko'); });
     return {ym:ym0, rows:out, bad:bad}; };
+  /* [2026-11-25] 「신청정보」 탭(아이마다 한 줄: 주 횟수·요일 시간·등하원·차량·탑승 장소·납부·카드 지참·전할 말) — 학부모가 문자로 보내던 신청서 */
+  function _stuG(n){ return (STUDENTS||[]).find(function(x){ return x&&x.n===n; })||null; }
+  window.gwSignupInfo=function(aoa, ym){ var H=(aoa[0]||[]).map(function(c){ return String(c||'').trim(); }), ix=function(n){ return H.indexOf(n); }, out={};
+    if(ix('수련생')<0) return out;
+    for(var j=1;j<aoa.length;j++){ var r=aoa[j]||[], nm=String(r[ix('수련생')]||'').replace(/\s+/g,' ').trim(); if(!nm || _ym(r[ix('대상월')])!==ym) continue;
+      var g=function(n){ var k=ix(n); return k<0?'':String(r[k]==null?'':r[k]).trim(); };
+      out[nm]={ weekly:g('주 횟수'), times:g('요일·시간'), pick:g('등하원'), bus:g('차량'), place:g('탑승 장소'), pay:g('납부 방법'), card:g('카드 지참')==='예', memo:g('메모'), same:g('지난 달과 같음')==='예' }; }
+    return out; };
+  /* 신청 주 횟수 ↔ 명단 등록 횟수(t: 주2…) 다른 아이 — 수련비가 달라지니 사람이 확인(자동으로 바꾸지 않음) */
+  window.gwSignupDiff=function(P){ var out={ t:[], ride:[] }; if(!P||!P.info) return out;
+    P.rows.forEach(function(r){ var s=_stuG(r.n), f=P.info[r.n]; if(!s||!f) return;
+      var w=Number(String(f.weekly||'').replace(/[^0-9]/g,''))||0, cur=Number(String(s.t||'').replace(/[^0-9]/g,''))||0, cw=cur>=4?4:cur, ww=w>=4?4:w;
+      if(w && cw!==ww) out.t.push({n:r.n, from:s.t||'(없음)', to:f.weekly});
+      if(f.pick){ var want=/직접/.test(f.pick); if(!!s.selfRide!==want) out.ride.push({n:r.n, on:want, pick:f.pick}); } });
+    return out; };
   window.gwSignupImport=function(){
     if(myRole()!=='admin'){ alert('관리자 기기에서만 할 수 있습니다.'); return; }
     if(!state.attPulledOnce){ alert('클라우드 명단을 아직 받지 못했습니다. 잠시 뒤 다시 눌러 주세요.'); return; }
@@ -46643,6 +46659,7 @@ function gwExamFeeOf(nm){
     inp.onchange=function(){ var fl=inp.files&&inp.files[0]; if(!fl) return; var rd=new FileReader();
       rd.onload=function(ev){ try{ var wb=XLSX.read(new Uint8Array(ev.target.result),{type:'array'}), sn=wb.SheetNames.indexOf('신청현황')>-1?'신청현황':wb.SheetNames[0];
           var P=gwSignupParse(XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1, raw:false, defval:''})); if(P.err){ alert(P.err); return; } if(!P.rows.length){ alert('넣을 신청이 없습니다.'); return; }
+          if(wb.SheetNames.indexOf('신청정보')>-1) P.info=gwSignupInfo(XLSX.utils.sheet_to_json(wb.Sheets['신청정보'],{header:1, raw:false, defval:''}), P.ym);
           window.__gwSu=P; gwSignupPaint(); }catch(e){ alert('파일을 읽지 못했습니다: '+(e&&e.message||e)); } };
       rd.readAsArrayBuffer(fl); }; inp.click(); };
   window.gwSignupPaint=function(){ var P=window.__gwSu; if(!P) return; var old=document.getElementById('gwSuOv'); if(old) old.remove();
@@ -46650,7 +46667,13 @@ function gwExamFeeOf(nm){
     var body='<div style="font-size:13.5px;line-height:1.7"><b>'+esc(P.ym)+'</b> 신청 · <b>'+ok.length+'명</b>을 '+esc(P.ym)+'-01부터 정규시간 변경으로 넣습니다. 주간 복사 때 그 시간에 자동 배치됩니다.'+
       (no.length?'<br><span style="color:#B45309">명단에 없는 이름 '+no.length+'명(넣지 않음): '+esc(no.map(function(r){return r.n;}).join(', '))+'</span>':'')+
       (P.bad.length?'<br><span style="color:#6B7280">시간을 알 수 없는 줄 '+P.bad.length+'개는 건너뜁니다: '+esc(P.bad.slice(0,5).join(' / '))+'</span>':'')+'</div>'+
-      '<div style="max-height:44vh;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px;font-size:12.5px">'+ok.map(function(r){ return '<div style="padding:5px 9px;border-bottom:1px solid #EEE"><b>'+esc(r.n)+'</b> · '+esc(r.slots.map(_slotLabel).join(', '))+'</div>'; }).join('')+'</div>';
+      '<div style="max-height:40vh;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px;font-size:12.5px">'+ok.map(function(r){ var f=(P.info||{})[r.n];
+        return '<div style="padding:5px 9px;border-bottom:1px solid #EEE"><b>'+esc(r.n)+'</b> · '+esc(r.slots.map(_slotLabel).join(', '))+
+          (f?'<div style="color:#475569">'+esc([f.weekly, f.pick+(f.bus?' '+f.bus:'')+(f.place?' ('+f.place+')':''), f.pay?'납부 '+f.pay:'', f.card?'카드 지참':'', f.same?'지난 달과 같음':''].filter(Boolean).join(' · '))+'</div>'+(f.memo?'<div style="color:#B45309">💬 '+esc(f.memo)+'</div>':''):'')+'</div>'; }).join('')+'</div>'+
+      (function(){ var D=gwSignupDiff(P), h='';
+        if(D.t.length) h+='<div style="margin-top:10px;font-size:13px;color:#B45309"><b>⚠️ 등록 횟수와 신청이 다른 아이 '+D.t.length+'명</b> — 수련비가 달라지니 학적부에서 확인해 주세요(자동으로 바꾸지 않습니다)<br>'+esc(D.t.map(function(x){ return x.n+' '+x.from+'→'+x.to; }).join(' · '))+'</div>';
+        if(D.ride.length) h+='<label style="display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:13px"><input type="checkbox" id="gwSuRide" checked style="margin-top:3px"><span><b>직접 등·하원 표시도 맞추기 '+D.ride.length+'명</b> (수련비 월 10,000원 할인과 연결)<br>'+esc(D.ride.map(function(x){ return x.n+(x.on?' 켬':' 끔'); }).join(' · '))+'</span></label>';
+        return h; })();
     var w=document.createElement('div'); w.innerHTML=uiModalHtml({id:'gwSuOv',title:'📥 수련신청 결과 불러오기',sub:'미리 보기 — 아직 바뀐 것이 없습니다',close:'gwSignupClose()',body:body,foot:'<button class="btn btn-s" onclick="gwSignupClose()">취소</button><button class="btn btn-p" onclick="gwSignupApply()"'+(ok.length?'':' disabled')+'>정규시간에 반영</button>'});
     document.body.appendChild(w.firstChild); };
   window.gwSignupClose=function(){ var o=document.getElementById('gwSuOv'); if(o) o.remove(); window.__gwSu=null; };
@@ -46661,8 +46684,10 @@ function gwExamFeeOf(nm){
       if(e){ if(JSON.stringify(e.slots)===JSON.stringify(r.slots)) return; e.slots=r.slots.slice(); e.t=now; }
       else arr.push({ hid:(typeof _newHid==='function'? _newHid() : 'h'+now.toString(36)+n), from:from, slots:r.slots.slice(), t:now, src:'신청' });
       n++; });
+    var rn=0, cb=document.getElementById('gwSuRide');
+    if(cb && cb.checked){ gwSignupDiff(P).ride.forEach(function(x){ var s=_stuG(x.n); if(!s) return; if(x.on) s.selfRide=1; else delete s.selfRide; s._t=Date.now(); rn++; }); if(rn) state.rosterT=Date.now(); }
     persistAtt(); if(myRole()==='admin') persist(); gwSignupClose(); try{ render(); }catch(e){}
-    toast('📥 '+P.ym+' 수련신청 '+n+'명을 정규시간 변경으로 넣었습니다'); };
+    toast('📥 '+P.ym+' 수련신청 '+n+'명을 정규시간 변경으로 넣었습니다'+(rn?' · 직접 등·하원 '+rn+'명 맞춤':'')); };
 })();
 
 /* ═══════════ 심사추천 명단 → 수련신청 시트 「심사추천」 탭(대상월·수련생 이름·현재 급수·다음 급수·분류·현재 횟수·부족 횟수·비고) ═══════════ */
@@ -46684,6 +46709,54 @@ window.gwExamRecExport=function(){ var R=gwExamRecRows(); if(!R.ym){ alert('다�
 
 /* 차량 15인승 정원(운영규정 제29조 ②) — 한 노선 탑승이 금액 관리 「시간대별 정원」(기본 15명)을 넘으면 표시 */
 window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15; }catch(e){} return (Number(n)>cap)? ' <b style="color:#B91C1C">⚠ 정원 '+cap+'명 초과</b>' : ''; };
+
+/* ═══════════ 관리 프로그램 ↔ 학부모 신청 링크 (2026-11-25 팀장님 「운영은 광교도장이 모두 — 관장님 혼자」) ═══════════
+   관장님은 구글 시트를 열지 않는다. 단추로: 📤 신청 명단 보내기(roster) · 📥 수련신청 결과 불러오기(export) · 📤 심사추천 명단 보내기(examrec).
+   신청 웹앱 doPost 로 text/plain JSON {fn, code}. 관장 확인 코드는 이 기기에만(localStorage gw_apply_code) — 코드는 이 파일에 적지 않는다. */
+(function(){
+  window.GW_APPLY_EXEC='https://script.google.com/macros/s/AKfycbx8IVKA8rc3SVZH3CyBr-e3V8OAX-zgqEzO4bWETH4vaZvHppM6UZzf6YfjQIlahLam/exec';
+  function getCode(){ try{ return localStorage.getItem('gw_apply_code')||''; }catch(e){ return ''; } }
+  window.gwApplyCodeSet=function(again){ var c=String(prompt((again?'관장 확인 코드가 맞지 않았습니다.\n':'')+'학부모 신청 링크의 「관장 확인 코드」(숫자)를 넣어 주세요.\n이 기기에만 기억합니다.', '')||'').replace(/\D/g,'');
+    if(!c) return ''; try{ localStorage.setItem('gw_apply_code', c); }catch(e){} try{ toast('🔑 관장 확인 코드를 이 기기에 기억했습니다'); }catch(e){} return c; };
+  window.gwApplyCall=function(fn, extra, cb){ var c=getCode()||gwApplyCodeSet(); if(!c){ cb({ok:false, msg:'관장 확인 코드가 없습니다.'}); return; }
+    var body={fn:fn, code:c}; for(var k in (extra||{})) body[k]=extra[k];
+    fetch(GW_APPLY_EXEC, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(body)})
+      .then(function(r){ return r.json(); })
+      .then(function(res){ if(res && res.badCode){ try{ localStorage.removeItem('gw_apply_code'); }catch(e){} if(gwApplyCodeSet(true)){ gwApplyCall(fn, extra, cb); return; } } cb(res||{ok:false, msg:'응답이 없습니다.'}); })
+      .catch(function(e){ cb({ok:false, net:true, msg:'신청 링크 서버에 닿지 못했습니다 — 인터넷을 확인해 주세요. ('+(e&&e.message||e)+')'}); }); };
+  function ageOf(s){ var y=Number(String(s.by||'').slice(0,4)); if(!y) return ''; return new Date().getFullYear()-y+1; }
+  /* 재원생 명단 → 신청 링크 「명단」(이름·보호자 전화 뒷 4자리·급수) — 퇴관생은 빼고 보내면 신청 쪽에서 재원 해제 */
+  window.gwRosterList=function(){ var out=[], nop=[];
+    (STUDENTS||[]).forEach(function(s){ if(!s||!s.n) return; var q=false; try{ q=!!isQuit(s.n); }catch(e){} if(q) return;
+      var ph=(s.gd||[]).map(function(g){ return String((g&&g.p)||'').replace(/\D/g,''); }).filter(function(p){ return p.length>=4; });
+      if(!ph.length){ nop.push(s.n); return; }
+      var demo=false; try{ demo=!!isDemo(s.n); }catch(e){}
+      var o={name:s.n, p1:ph[0], p2:ph[1]||'', age:ageOf(s), grade:s.grade||''}; if(demo) o.div='시범단'; out.push(o); });
+    return {list:out, nop:nop}; };
+  window.gwRosterPush=function(){ if(myRole()!=='admin'){ alert('관리자 기기에서만 할 수 있습니다.'); return; }
+    if(!state.attPulledOnce){ alert('클라우드 명단을 아직 받지 못했습니다. 잠시 뒤 다시 눌러 주세요.'); return; }
+    var L=gwRosterList(); if(!L.list.length){ alert('보낼 재원생이 없습니다.'); return; }
+    if(!confirm('재원생 '+L.list.length+'명을 학부모 신청 링크 명단으로 보냅니다.\n(이름 · 보호자 전화 뒷 4자리 · 급수 — 퇴관생은 신청 링크에서 빠집니다)'+(L.nop.length?'\n\n⚠️ 보호자 전화가 없어 못 보내는 아이 '+L.nop.length+'명: '+L.nop.slice(0,10).join(', ')+(L.nop.length>10?' 외':'')+'\n— 학적부에 보호자 전화를 넣으면 다음에 함께 보내집니다':''))) return;
+    try{ toast('📤 신청 링크로 명단을 보내는 중…'); }catch(e){}
+    gwApplyCall('roster', {list:L.list}, function(res){ if(!res.ok){ alert('명단을 보내지 못했습니다.\n'+(res.msg||'')); return; } alert('✅ 신청 링크 명단에 반영했습니다\n'+res.msg); }); };
+  /* 신청 결과 — 링크에서 바로 받기(안 되면 예전처럼 엑셀 파일로) */
+  var fileImport=window.gwSignupImport;
+  window.gwSignupImportFile=fileImport;
+  window.gwSignupImport=function(ym){ if(myRole()!=='admin'){ alert('관리자 기기에서만 할 수 있습니다.'); return; }
+    if(!state.attPulledOnce){ alert('클라우드 명단을 아직 받지 못했습니다. 잠시 뒤 다시 눌러 주세요.'); return; }
+    try{ toast('📥 신청 링크에서 신청을 받는 중…'); }catch(e){}
+    gwApplyCall('export', {ym:ym||''}, function(res){
+      if(!res.ok){ if(confirm((res.msg||'신청을 받지 못했습니다.')+'\n\n엑셀 파일로 불러올까요?')) fileImport(); return; }
+      var P=gwSignupParse(res.req||[]); if(P.err){ alert(P.err); return; }
+      if(!P.rows.length){ alert((res.ym||'')+' 신청이 아직 없습니다.'+(res.ym===res.cur?'':'')); return; }
+      P.info=gwSignupInfo(res.info||[], P.ym); window.__gwSu=P; gwSignupPaint(); }); };
+  /* 심사추천 — 링크로 바로 보내기(안 되면 엑셀) */
+  var fileExam=window.gwExamRecExport;
+  window.gwExamRecExport=function(){ var R=gwExamRecRows(); if(!R.ym){ alert('다음 심사일을 알 수 없습니다.'); return; } if(!R.rows.length){ alert(R.ym+' 심사 추천 대상이 없습니다.'); return; }
+    if(!confirm(R.ym+' 승급심사 추천 '+R.rows.length+'명을 학부모 신청 링크로 보냅니다.\n이 아이들에게만 「승급심사 신청」이 열립니다(그 달 명단은 새로 바뀝니다).')) return;
+    gwApplyCall('examrec', {ym:R.ym, rows:R.rows}, function(res){ if(!res.ok){ if(confirm((res.msg||'보내지 못했습니다.')+'\n\n엑셀 파일로 받을까요?')) fileExam(); return; } alert('✅ '+res.msg); }); };
+})();
+
 
 </script>
 <script>
