@@ -9652,7 +9652,7 @@ window.feeMxNewRegOpen=function(name, m0){
     r.on=isNew; r.over=null; r.noMk=true;
     if(!isNew) return;
     r.nrN=_nrAutoN(nm, m0, dt); r.nrU=_nrUnitFor(f, nm, r.nrN); r.nrUm=0;
-    if(!String(r.eAmt||'').replace(/[^0-9]/g,'')) r.eAmt=Number(gwEntryFee(nm,eStd)).toLocaleString('ko-KR');   /* [광교 G5] 체험비 차감 */
+    if(!String(r.eAmt||'').replace(/[^0-9]/g,'')) r.eAmt=Number(gwEntryFee(nm,eStd,dt)).toLocaleString('ko-KR');   /* [광교 G5] 체험비 차감 · 2027-03-01 등록부터 */
     if(!String(r.gAmt||'').replace(/[^0-9]/g,'')){ var _gift=gwDobokGift(f,nm,m0); r.gAmt=_gift?'':Number(gStd).toLocaleString('ko-KR'); r.gMemo=r.gMemo||(_gift?'도복 형제 증정':'도복'); }   /* [광교 G5] 형제 도복 증정 */
   });
   var me=f.rows[name]; f.nr.only=true;   /* [광교 G5] 첫 달은 남은 횟수만, 다음 달은 따로 */   /* [R4.573] 홀수 달 등록은 남은 한 달을 함께 받는 것이 기본(따로 두면 정기 청구가 다음 기간으로 넘어가 빠지기 쉬움) */
@@ -12462,6 +12462,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.859.2", "d": "2026-11-25", "t": "입회비는 2027년 3월 1일 등록부터", "L": ["입회비 20,000원은 2027년 3월 1일 이후 새로 등록하는 아이부터 받습니다 — 그 전에 등록하면 첫 등록 창의 입회비가 0원으로 들어갑니다(필요하면 직접 넣을 수 있습니다)", "운영규정 제6조·부칙도 같은 내용으로 고쳤습니다"]},
   {"v": "v13.859.1", "d": "2026-11-25", "t": "시간표보기 — 고친 내용이 그대로 남게", "L": ["「🖼 시간표보기 → ✏ 내용 수정」에서 맘스부(오전 10시) 줄을 고치고 저장하면 원래대로 돌아가던 문제를 고쳤습니다", "설정과 다르게 고친 칸은 저장할 때 한 번 물어본 뒤, 학부모용 이미지에만 그대로 남습니다 (수련시간표 설정은 그대로)", "이미지 제목이 오른쪽 「○○부터 적용」 날짜와 겹치지 않게 했고, 토요일 칸 안내를 우리 도장 수업 안내로 바꿨습니다"]},
   {"v": "v13.859", "d": "2026-11-24", "t": "운영규정 개정에 맞춤", "L": ["승급심사가 매월 넷째 주 월·화·수·목 나흘로 늘고, 하루 정원이 25명이 되었습니다", "미납 안내는 1주가 지나면 1차, 2주가 지나면 최종 안내로 앞당겼습니다", "도복·가방·국기원 재응시 심사비가 새 금액으로 바뀌었고, 결제 수단에 「바우처」·「비대면」이 생겼습니다", "기타수입을 여러 건 한 번에 지울 수 있습니다"]},
   {"v": "v13.846", "d": "2026-11-23", "t": "만료 표시에 홀딩 반영 외", "L": ["홀딩을 승인받은 수련생은 명단의 「임박·만료」 표시와 학적부·홈 만료 알림에도 홀딩만큼 늘어난 만료가 보입니다 (수련비 청구 판정은 그대로)", "수련비 청구 창에 「➖ 보강 대신 차감」이 생겼습니다 — 다쳐서 오래 쉬어 보강이 어려우면 보강 횟수만큼 수련비에서 빼 줍니다", "확인·안내 창이 청구 창 뒤에 가려지던 문제, 한글을 지울 때 앞 글자까지 낱자로 지워지던 문제를 고쳤습니다"]},
@@ -18906,7 +18907,7 @@ function briefMonthlyAgg(){
 /* ══ [R4.231] 등록안내표 — 카톡 등록 안내용 포스터 이미지 (금액 수정 가능) ══
    금액은 이 기기 localStorage(naracha_regguide)에 저장 — 표시·이미지 생성 전용이라 회계 동기화와 무관. */
 function regGuideDefaultNotes(){
-  return ["1. 기본 수련은 주2회(월 8회)입니다. 등록은 월 단위 선납이며, 6개월 선납 5%·12개월 선납 10%를 할인합니다.", "2. 주4·5회 등록은 한 달 최대 20회까지 추가 비용 없이 수련합니다.", "3. 주2회·주3회 등록자가 기준 횟수를 넘어 수련하면 초과 1회당 10,000원을 다음 등록 때 더해 냅니다. 실제 횟수에 맞는 등록 금액을 넘지 않으며, 보강으로 나온 날은 세지 않습니다.", "4. 결석은 익월까지 보강할 수 있습니다. 결석·공휴일·휴관일로 수련비를 차감하지 않고 보강으로 채워 드립니다.", "5. 할인: 형제 각 월 5,000원·셋째부터 30%, 직접 등·하원 월 10,000원(직계가족은 등본·건강보험증 확인). 선납 할인과는 겹치지 않으며 더 큰 쪽 하나만 적용합니다.", "6. 입회비 20,000원(최초 1회 · 체험수련비 10,000원 차감). 환불은 운영규정 제14조를 따릅니다."].join("\n");
+  return ["1. 기본 수련은 주2회(월 8회)입니다. 등록은 월 단위 선납이며, 6개월 선납 5%·12개월 선납 10%를 할인합니다.", "2. 주4·5회 등록은 한 달 최대 20회까지 추가 비용 없이 수련합니다.", "3. 주2회·주3회 등록자가 기준 횟수를 넘어 수련하면 초과 1회당 10,000원을 다음 등록 때 더해 냅니다. 실제 횟수에 맞는 등록 금액을 넘지 않으며, 보강으로 나온 날은 세지 않습니다.", "4. 결석은 익월까지 보강할 수 있습니다. 결석·공휴일·휴관일로 수련비를 차감하지 않고 보강으로 채워 드립니다.", "5. 할인: 형제 각 월 5,000원·셋째부터 30%, 직접 등·하원 월 10,000원(직계가족은 등본·건강보험증 확인). 선납 할인과는 겹치지 않으며 더 큰 쪽 하나만 적용합니다.", "6. 입회비 20,000원(2027년 3월 1일 신규 등록부터 · 최초 1회 · 체험수련비 10,000원 차감). 환불은 운영규정 제14조를 따릅니다."].join("\n");
 }
 function regGuideCfg(){
   var d={ w1:100000, w2:180000, w3:240000, fp:300000, fam2:160000, fam3:140000, fam2w3:210000, fam3w3:180000, notes:regGuideDefaultNotes() };   /* [R4.576] 심화(월12회) 형제 할인 — 운영규정 제11조 표(팀장님 확정) */
@@ -46446,7 +46447,9 @@ function gwExamFeeOf(nm){
     return r; }; }
 
   /* ── 입회비·도복(제6조): 체험수련비를 낸 만큼 입회비에서 빼고, 형제가 추가로 입관하면 도복 증정 ── */
-  window.gwEntryFee=function(nm, std){ var paid=0; (state.payments||[]).forEach(function(p){ if(p && p.name===nm && p.cat==='체험비' && p.paid && !p.refundOf) paid+=Number(p.amount)||0; }); return Math.max(0, (Number(std)||0)-paid); };
+  /* [v13.859.2] 입회비 20,000원은 2027-03-01 신규 등록부터(관장님 2026-11-25 · 운영규정 제6조·부칙 3-1) — 그 전 등록일이면 0원(손으로 넣을 수는 있음) */
+  window.GW_ENTRY_FROM='2027-03-01';
+  window.gwEntryFee=function(nm, std, dt){ if(String(dt||today()).slice(0,10)<GW_ENTRY_FROM) return 0; var paid=0; (state.payments||[]).forEach(function(p){ if(p && p.name===nm && p.cat==='체험비' && p.paid && !p.refundOf) paid+=Number(p.amount)||0; }); return Math.max(0, (Number(std)||0)-paid); };
   window.gwDobokGift=function(f, nm, m0){ try{ var names=f.names||[], isNew=function(x){ return x===nm || String((_stu(x)||{}).joinDate||'').slice(0,7)>=m0; };
       if(names.some(function(x){ return x!==nm && !isNew(x) && !(typeof isQuit==='function' && isQuit(x)); })) return true;   /* 이미 다니는 형제가 있음 */
       var nw=names.filter(isNew).sort(function(a,b){ return String((_stu(a)||{}).by||'9').localeCompare(String((_stu(b)||{}).by||'9')); });
