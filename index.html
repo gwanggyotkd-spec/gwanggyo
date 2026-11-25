@@ -12462,6 +12462,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.859.3", "d": "2026-11-25", "t": "처음엔 꼭 필요한 메뉴만", "L": ["처음에는 오늘브리핑 · 수련생관리 · 심사평가 · 회계관리(수련비)만 보이게 정리했습니다", "차량운행·업무관리·측정관리·캘린더·학부모앱과 매출·결제 내역 정리 같은 재무 메뉴는 잠시 감췄습니다 — 자료는 그대로이고, 필요할 때 차례대로 열어 드립니다", "학부모 수련 신청 링크에서 아이 이름 「체험」, 번호 「0000」으로 들어가면 학부모 화면을 미리 눌러 보실 수 있습니다(저장되지 않음)"]},
   {"v": "v13.859.2", "d": "2026-11-25", "t": "입회비는 2027년 3월 1일 등록부터", "L": ["입회비 20,000원은 2027년 3월 1일 이후 새로 등록하는 아이부터 받습니다 — 그 전에 등록하면 첫 등록 창의 입회비가 0원으로 들어갑니다(필요하면 직접 넣을 수 있습니다)", "운영규정 제6조·부칙도 같은 내용으로 고쳤습니다"]},
   {"v": "v13.859.1", "d": "2026-11-25", "t": "시간표보기 — 고친 내용이 그대로 남게", "L": ["「🖼 시간표보기 → ✏ 내용 수정」에서 맘스부(오전 10시) 줄을 고치고 저장하면 원래대로 돌아가던 문제를 고쳤습니다", "설정과 다르게 고친 칸은 저장할 때 한 번 물어본 뒤, 학부모용 이미지에만 그대로 남습니다 (수련시간표 설정은 그대로)", "이미지 제목이 오른쪽 「○○부터 적용」 날짜와 겹치지 않게 했고, 토요일 칸 안내를 우리 도장 수업 안내로 바꿨습니다"]},
   {"v": "v13.859", "d": "2026-11-24", "t": "운영규정 개정에 맞춤", "L": ["승급심사가 매월 넷째 주 월·화·수·목 나흘로 늘고, 하루 정원이 25명이 되었습니다", "미납 안내는 1주가 지나면 1차, 2주가 지나면 최종 안내로 앞당겼습니다", "도복·가방·국기원 재응시 심사비가 새 금액으로 바뀌었고, 결제 수단에 「바우처」·「비대면」이 생겼습니다", "기타수입을 여러 건 한 번에 지울 수 있습니다"]},
@@ -46720,6 +46721,47 @@ window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15
       .then(function(ok){ if(ok) reset(); else wrong(); })
       .catch(function(){ alert('인터넷 연결을 확인해 주세요.'); });
   };
+})();
+
+</script>
+<script>
+/* ══ [광교 G10] 처음엔 기본 메뉴만 — 나머지는 단추만 감춤 (2026-11-25 팀장님 「처음에 원했던 기본적인 부분부터, 메뉴는 차례대로 오픈」) ══
+   남김: 오늘브리핑 · 수련생관리(명단·출석·시간표·등록상담) · 심사평가 · 원생 등록 · 회계관리 중 수련비(수련비 관리·장기등록·회계입력·수납 관리·금액 관리)
+   감춤: 재무 쪽(매출 현황·결제 내역 정리·연간브리핑·기타수입·회계백업·등록안내표) · 차량운행관리·차계부 · 업무관리 · 측정관리 · 캘린더 · 학부모앱
+   기능·자료·동기화는 그대로다(단추·들어가는 길만 막음). ▶ 메뉴를 다시 열려면 아래 OFF 목록에서 그 항목을 지우고 빌드하면 된다. */
+(function(){
+  var OFF={
+    cats:['측정','업무'],                                                     /* 위 메뉴(setTopCat) */
+    acc:['납부집계','회계백업','연간브리핑','계좌내역','등록안내표','기타수입관리'],   /* 회계관리 안 탭(setTab) */
+    att:['📱 학부모앱'],                                                       /* 수련생관리 안 탭(setAttTab) */
+    mo:['event','journal','car','bus'],                                       /* 휴대폰 아래 탭(setMoTab) */
+    fn:['goBusTab','goBusT','openQuickCal','openParentMg'],                   /* 단추 함수 */
+    hub:['busbak','parentapp']                                                /* 설정 창 항목 */
+  };
+  window.GW_MENU_OFF=OFF;
+  var sel=[];
+  OFF.cats.forEach(function(c){ sel.push('[onclick*="setTopCat(\''+c+'\')"]'); });
+  OFF.acc.forEach(function(t){ sel.push('[onclick*="setTab(\''+t+'\')"]'); });
+  OFF.att.forEach(function(t){ sel.push('[onclick*="setAttTab(\''+t+'\')"]'); });
+  OFF.mo.forEach(function(t){ sel.push('[onclick*="setMoTab(\''+t+'\')"]'); });
+  OFF.fn.forEach(function(f){ sel.push('[onclick^="'+f+'"]'); sel.push('[onclick*=";'+f+'("]'); });
+  OFF.hub.forEach(function(h){ sel.push('[onclick*="_setHubRun(\''+h+'\')"]'); });
+  try{ var st=document.createElement('style'); st.id='gwMenuOff'; st.textContent=sel.join(',')+'{display:none!important}'; document.head.appendChild(st); }catch(e){}
+  function fix(){ try{
+    if(OFF.cats.indexOf(state.topCat)>-1) state.topCat='출석';
+    if(state.topCat==='회계' && OFF.acc.indexOf(state.tab)>-1) state.tab='수련비현황';
+    if(OFF.att.indexOf(state.attTab)>-1) state.attTab='수련시간표';
+    if(OFF.mo.indexOf(state.moTab)>-1) state.moTab='time';
+  }catch(e){} }
+  function wrap(n, fx){ var o=window[n]; if(typeof o!=='function') return; window['__gwOrig_'+n]=o; /* 시험·나중에 열 때 */ window[n]=function(){ var a=[].slice.call(arguments); if(fx(a)===false) return; return o.apply(this,a); }; }
+  wrap('setTopCat', function(a){ if(OFF.cats.indexOf(a[0])>-1) a[0]='출석'; });
+  wrap('setTab', function(a){ if(OFF.acc.indexOf(a[0])>-1) a[0]='수련비현황'; });
+  wrap('setAttTab', function(a){ if(OFF.att.indexOf(a[0])>-1) a[0]='수련시간표'; });
+  wrap('setMoTab', function(a){ if(OFF.mo.indexOf(a[0])>-1) a[0]='time'; });
+  ['goBusTab','openQuickCal','openParentMg'].forEach(function(n){ wrap(n, function(){ try{ toast('이 메뉴는 아직 열지 않았습니다'); }catch(e){} return false; }); });
+  wrap('_setHubRun', function(a){ if(OFF.hub.indexOf(a[0])>-1) return false; });
+  if(typeof window.render==='function'){ var _r=window.render; window.render=function(){ fix(); return _r.apply(this,arguments); }; }
+  fix();
 })();
 
 </script>
