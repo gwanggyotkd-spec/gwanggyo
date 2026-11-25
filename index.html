@@ -12462,6 +12462,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.859.6", "d": "2026-11-25", "t": "환불 계산기 — 광교 운영규정 제14조대로", "L": ["회계관리 › 수련비 쪽에 「환불계산기」가 열렸습니다 — 수련생과 휴관(퇴관) 시작일을 넣으면 환불 금액과 학부모 안내 문구가 나옵니다", "계산은 제14조대로: 낸 수련비 − 수련한 날만큼(한 달 30일 일할) − 위약금 10% (도장 사정으로 그만두면 위약금 없음)", "차량비·도복비 등 수련비 외 비용은 환불하지 않습니다(제14조 ⑤) · 돌려드리지 않는 몫은 다시 청구로 남습니다"]},
   {"v": "v13.859.5", "d": "2026-11-25", "t": "관장 확인 코드 — 넣지 않아도 됩니다", "L": ["관리 프로그램의 📤 신청 명단 보내기 · 📥 수련신청 결과 불러오기 · 📤 심사추천 명단 보내기는 관장님 기기의 도장 접속키로 저절로 확인됩니다", "휴대폰 신청 링크의 관장님 화면은 한 번 들어가면 그 휴대폰이 기억해서, 다음부터는 「관장님 화면 바로 열기」만 누르시면 됩니다"]},
   {"v": "v13.859.4", "d": "2026-11-25", "t": "수련 신청 — 문자 대신 링크로", "L": ["학부모님이 신청 링크에서 요일·시간과 함께 등·하원 방법(차량은 탑승 장소), 수련비 납부 방법, 도장에 전할 말까지 남깁니다 — 「지난 달과 같게」 단추 하나로도 됩니다", "관장님은 신청 링크에 이름 「관장」과 관장 확인 코드로 들어가면 신청 정리표·미신청 명단·공지 문자를 보고 복사할 수 있습니다", "「📥 수련신청 결과 불러오기」 미리 보기에 등·하원·납부·전할 말이 함께 보이고, 등록 횟수와 신청이 다른 아이를 알려 드립니다(직접 등·하원 표시도 맞출 수 있습니다)"]},
   {"v": "v13.859.3", "d": "2026-11-25", "t": "처음엔 꼭 필요한 메뉴만", "L": ["처음에는 오늘브리핑 · 수련생관리 · 심사평가 · 회계관리(수련비)만 보이게 정리했습니다", "차량운행·업무관리·측정관리·캘린더·학부모앱과 매출·결제 내역 정리 같은 재무 메뉴는 잠시 감췄습니다 — 자료는 그대로이고, 필요할 때 차례대로 열어 드립니다", "학부모 수련 신청 링크에서 아이 이름 「체험」, 번호 「0000」으로 들어가면 학부모 화면을 미리 눌러 보실 수 있습니다(저장되지 않음)"]},
@@ -43340,7 +43341,7 @@ function render(){
         if(t==="📊 브리핑") return '<button class="tab'+((state.attTab===t||state.attTab==="인원현황")?' on':'')+'" onclick="setAttTab(\''+t+'\')">운영 현황</button>';
         return '<button class="tab'+(state.attTab===t?' on':'')+'" onclick="setAttTab(\''+t+'\')">'+t+'</button>';
       }).join('')+'</div><button class="mgMenu mg'+(_isMgTab()?' on':'')+'" onclick="setAttTab(\'관리필요수련생\')" title="관리필요 — 매일 회의에서 함께 보는 목록">'+MG_MEET_ICO+'관리필요'+(function(){ var n=_mgNeedCount(); return n?'<span class="mgN">'+n+'</span>':''; })()+'</button><button class="mgMenu cs nw'+(state.attTab==='📞 등록상담'?' on':'')+'" onclick="setAttTab(\'📞 등록상담\')" title="등록상담 — 새내기(체험·상담) 관리">'+NW_SPROUT_ICO+'등록상담</button>'+_todoBarHtml()+'</div>'
-    : '<div class="tabsRow xiRowT"><div class="tabs">'+["수련비현황","장기등록관리","회계입력","납부내역","납부집계","회계백업","연간브리핑","금액관리","계좌내역"].map(function(t){   /* [R4.849] 환불 계산기 · [R4.486] 수련비 관리를 맨 왼쪽(첫 화면) · [R4.528] 맨 오른쪽 계좌내역 · [R4.602] 장기등록관리를 수련비 관리 오른쪽에(출석 탭과 같은 화면, 팀장님) */
+    : '<div class="tabsRow xiRowT"><div class="tabs">'+["수련비현황","장기등록관리","회계입력","환불계산기","납부내역","납부집계","회계백업","연간브리핑","금액관리","계좌내역"].map(function(t){   /* [R4.849] 환불 계산기 · [R4.486] 수련비 관리를 맨 왼쪽(첫 화면) · [R4.528] 맨 오른쪽 계좌내역 · [R4.602] 장기등록관리를 수련비 관리 오른쪽에(출석 탭과 같은 화면, 팀장님) */
         if(t==="장기등록관리") return '<button class="tab'+(state.tab===t?' on':'')+'" onclick="setTab(\'장기등록관리\')" style="font-weight:800">📅 장기등록관리</button>';
         if(t==="금액관리") return '<button class="tab'+(state.tab===t?' on':'')+'" onclick="setTab(\'금액관리\')" style="font-weight:800">💰 금액 관리</button>';   /* [R4.530] */
         if(t==="환불계산기") return '<button class="tab'+(state.tab===t?' on':'')+'" onclick="setTab(\'환불계산기\')" style="color:#B23A48;font-weight:800" title="휴관·퇴관 날짜로 환불 금액과 안내 문구를 계산(운영규정 제14조)">🧮 환불 계산기</button>';   /* [R4.849] */
@@ -46838,6 +46839,64 @@ window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15
   wrap('_setHubRun', function(a){ if(OFF.hub.indexOf(a[0])>-1) return false; });
   if(typeof window.render==='function'){ var _r=window.render; window.render=function(){ fix(); return _r.apply(this,arguments); }; }
   fix();
+})();
+
+</script>
+<script>
+/* ══ [광교 G11] 환불 계산기 — 더빛광교 운영규정 제14조에 맞춤 (2026-11-25 팀장님 「네, 맞춰 줘」) ══
+   원본 계산기(R4.849~857)를 그대로 쓰되 광교와 다른 것만 덮는다. 저장 형식·장부 기록 방식(전액 환불 − + 재청구 미납)은 그대로.
+   ① 같은 것 — 경과분(실제 납부액 ÷ 30일×개월 일할 = 월평균액 기준, ③)·위약금 총액 10%(②)·도장 귀책이면 위약금 없음(② 3호)
+   ② 다른 것 — 제14조 ⑤ 「도복비·차량비 등 수련비 외 비용은 환불되지 않습니다」 → 차량비 납부는 계산기에서 뺌
+               결제 수단 = 광교(카드·계좌·용인페이·바우처·비대면·현금·기타) · 성남사랑·결제선생 없음 → 돌려드리지 않는 몫은 「다시 청구」
+               규정 링크 = 광교 운영규정 제14조(#jo13) */
+(function(){
+  if(typeof _rfcItems!=='function' || typeof _rfcMsg!=='function') return;
+  var RULE_URL='https://gwanggyotkd-spec.github.io/gwanggyo/rules.html#jo13';
+  var _items0=_rfcItems;
+  window.__gwRfcItems0=_items0;   /* 시험용 */
+  _rfcItems=function(o){ return _items0(o).filter(function(it){ return !it.van; }); };   /* ⑤ 차량비 환불 안 함 */
+  function vanLeft(o){ try{ return _items0(o).some(function(it){ return it.van; }); }catch(e){ return false; } }
+  var NM={'카드':'카드','계좌':'계좌이체','용인페이':'용인페이','바우처':'바우처','비대면':'비대면결제','현금':'현금','기타':'기타'};
+  var _mth0=_rfcMth;
+  _rfcMth=function(m){ m=String(m||''); return NM[m]||_mth0(m); };
+  function kind(m){ m=String(m||''); if(/용인페이/.test(m)) return 'local'; if(/바우처/.test(m)) return 'voucher'; if(/비대면/.test(m)) return 'link'; if(/카드|kis/i.test(m)) return 'card'; return 'bank'; }
+
+  _rfcMsg=function(o, L){ var nm=o.name, tot=0, back=0, keep=0, G={}, GK=[], md=function(d){ return /^\d{4}-\d{2}-\d{2}/.test(String(d||''))?_rfcMD(d):''; };
+    var t='[휴관 환불 안내]\n안녕하세요, 더빛광교태권도장입니다.\n'+nm+' 수련생 '+_rfcMD(o.start)+' 휴관에 따른 환불 안내드립니다.\n';
+    L.forEach(function(it){ var rm=it.rm, c=it.c, d=md(rm.payDate); tot+=rm.origAmount; back+=c.back; keep+=c.use+c.pen;
+      var k=(rm.method||'')+'|'+String(rm.payDate||'').slice(0,10); if(!G[k]){ G[k]={m:rm.method||'', d:String(rm.payDate||'').slice(0,10), amt:0}; GK.push(k); } G[k].amt+=rm.origAmount;
+      var use=c.cnt? c.el+'회 수련분 '+won(c.use) : (c.el? _rfcMD(rm.startD)+'~'+_rfcMD(rm.cut>rm.endD?rm.endD:rm.cut)+' 수련분 '+won(c.use) : '');
+      var ded=[use, c.pen?'위약금 10% '+won(c.pen):''].filter(Boolean).join(' + ');
+      t+='\n■ 수련비 '+won(rm.origAmount)+' ('+[d,_rfcMth(rm.method)].filter(Boolean).join(' ')+')\n'+(ded?ded+' 공제\n':'')+'→ 환불 '+won(c.back)+'\n'; });
+    t+='\n▶ 총 환불 '+won(back)+'\n';
+    var how=GK.map(function(k){ var g=G[k], lab=_rfcMth(g.m)+' '+won(g.amt), w=kind(g.m);
+      if(w==='bank') return lab+'은 계좌로 돌려드리고';
+      return lab+'은 도장에서 결제를 취소해 드리고'; });
+    t+=how.join(', ')+(keep?', 수련분·위약금 '+won(keep)+'은 다시 청구해 드립니다.':'.').replace(/드리고\.$/,'드립니다.')+'\n';
+    if(o.fault) t+='(도장 사정에 따른 해지라 위약금은 없습니다.)\n';
+    if(vanLeft(o)) t+='(차량비 등 수련비 외 비용은 환불되지 않습니다.)\n';
+    t+='\n감사합니다.\n더빛광교 운영규정 제14조\n'+RULE_URL;
+    return {t:t, tot:tot, back:back, keep:keep, G:GK.map(function(k){ return G[k]; })}; };
+
+  _rfcTodo=function(o, L, M){ var out=[];
+    M.G.forEach(function(g){ var when=_rfcDay(g.d), lab=(when?when+' ':'')+_rfcMth(g.m)+' '+won(g.amt), w=kind(g.m);
+      if(w==='card') out.push('💳 '+lab+' — 카드 단말기·카드사에서 승인 취소');
+      else if(w==='link') out.push('📲 '+lab+' — 비대면결제(결제 링크) 관리 화면에서 결제 취소');
+      else if(w==='local') out.push('🪙 '+lab+' — 용인페이 결제 취소(가맹점 결제 취소 · 결제하신 분 확인)');
+      else if(w==='voucher') out.push('🎫 '+lab+' — 바우처 결제 취소(바우처 카드 단말기·이용권 절차)');
+      else out.push('🏦 '+lab+' — 계좌로 돌려보내기'); });
+    out.push('📒 아래 [💸 한 번에 환불 처리] — 장부에 전액 환불(−) + 재청구(미납) 기록');
+    if(M.keep) out.push('✉ 돌려드리지 않는 몫 '+won(M.keep)+' — 수련비 관리에서 미납 안내 → 학부모님이 카드·계좌·용인페이 등으로 결제');
+    if(vanLeft(o)) out.push('🚐 차량비는 환불하지 않습니다(제14조 ⑤) — 계산에서 뺐습니다');
+    return out; };
+
+  if(typeof renderRefundCalc==='function'){ var _rc0=renderRefundCalc;
+    renderRefundCalc=function(){ return String(_rc0.apply(this, arguments))
+      .replace('계산만 하고 저장하지 않습니다</small>', '계산만 하고 저장하지 않습니다 · 수련비만 환불합니다(차량비·도복비 등은 환불 안 함, 입회비는 첫 등록 후 15일 안에만 — 제14조 ⑤)</small>')
+      .replace(/\(위약금 없음 · 제\d+조 [①-⑩]\)/, '(위약금 없음 · 제14조 ② 3호)')
+      .replace(/\(관장님 원칙:[^)]*\)/, '(운영규정 제14조 ④: 결제하신 수단 그대로 전액 취소 → 돌려드리지 않는 몫은 다시 청구)')
+      .replace(/운영규정 부록 \d 계산기와 같음/, '운영규정 부록 1 계산 도구와 같음')
+      .replace(/기간이 남은 수련비·차량비 납부가 없습니다/, '기간이 남은 수련비 납부가 없습니다'); }; }
 })();
 
 </script>
