@@ -12464,6 +12464,7 @@ window.finNotesOk=function(){ var c=window.__notesCtx||{ALL:FIN_NOTES, KEY:'nara
 /* [R4.825] 관장님: 프로그램을 고친 뒤 처음 여는 기기에서 바뀐 내용을 정리해 팝업으로 — 앞으로 고칠 때마다 MAIN_NOTES 맨 위에 한 줄 추가(쉬운 말 · 개인정보·금액·이름 없음).
    이 기기에서 본 버전 = localStorage naracha_main_notes · 처음 쓰는 기기는 최근 3개만 · 설정 › 「📝 개선 내역」에서 전체 다시 보기 */
 var MAIN_NOTES=[
+  {"v": "v13.861.1", "d": "2026-11-25", "t": "정정 기간 · 월 중간 변경", "L": ["신청한 가정은 그 달 첫째 금요일까지(12월은 12/4) 같은 링크로 고칠 수 있고, 그 뒤에는 링크가 잠깁니다(승급심사 대상만 심사 신청으로 들어옴)", "[📋 전체 신청 안내 복사]가 관장님 문자 틀 그대로 나옵니다 — 신청 기간·정정 기간 날짜, 답장 번호, 서명이 저절로", "월 중간에 바뀌는 아이는 「📝 학부모 신청」에서 이번 달 [✏ 고치기] → 다음 주 출석부부터 새 시간"]},
   {"v": "v13.861", "d": "2026-11-25", "t": "학부모 신청 관리 — 신청이 저절로 들어갑니다", "L": ["위 메뉴 「📝 학부모 신청」(시간표 설정 줄에도)에서 이번 달 학부모 신청을 한눈에 보고 관리합니다 — 신청·미신청·전할 말·확인 필요", "학부모님이 링크로 저장한 요일·시간은 정규시간으로, 직접 등·하원은 학적부에 저절로 들어갑니다(15분마다·화면을 열 때)", "안내 문자는 [📋 복사] 후 카톡·휴대폰 문자로 보내세요 — 전체 안내 · 미신청 가정 다시 안내 · 아이별 신청 확인 문자", "전화로 받은 신청은 [✏ 대신 신청·고치기]로 넣고, 신청 주 횟수가 등록 횟수와 다르면 [바꾸기]를 눌러 수련비를 맞춥니다"]},
   {"v": "v13.861", "d": "2026-11-25", "t": "체크한 미납 한꺼번에 납부", "L": ["수련비 관리 칸 창(납부 확인)에서 미납 앞 체크박스를 체크하면 「체크한 미납 N건 한꺼번에 납부」 줄이 생깁니다 — 납부일·결제 방법을 한 번만 고르고 [💳 N건 납부]", "[☑ 미납만 선택]으로 미납만 한 번에 체크할 수 있습니다"]},
   {"v": "v13.859.6", "d": "2026-11-25", "t": "환불 계산기 — 광교 운영규정 제14조대로", "L": ["회계관리 › 수련비 쪽에 「환불계산기」가 열렸습니다 — 수련생과 휴관(퇴관) 시작일을 넣으면 환불 금액과 학부모 안내 문구가 나옵니다", "계산은 제14조대로: 낸 수련비 − 수련한 날만큼(한 달 30일 일할) − 위약금 10% (도장 사정으로 그만두면 위약금 없음)", "차량비·도복비 등 수련비 외 비용은 환불하지 않습니다(제14조 ⑤) · 돌려드리지 않는 몫은 다시 청구로 남습니다"]},
@@ -46967,6 +46968,9 @@ window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15
   /* 저장 시각 → 'yyyyMMddHHmm'(서버 판·시트 칸 모양이 달라도 같은 값) */
   function nAt(a){ a=String(a||''); if(/^\d{4}-\d{2}-\d{2}/.test(a)) return a.replace(/\D/g,'').slice(0,12); var d=new Date(a); if(isNaN(d)) return a; var z=function(n){ return ('0'+n).slice(-2); }; return d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+z(d.getHours())+z(d.getMinutes()); }
   window.gwPaAt=nAt;
+  /* 고치고 반영할 수 있는 달 = 신청 받는 달 + 이번 달(월 중간에 관장님이 바꾸는 것 — 2026-11-25 관장님 「월중 직접 시간 변경」) */
+  function live(B){ var t=''; try{ t=today().slice(0,7); }catch(e){} return !!B && (B.ym===B.cur || B.ym===t); }
+  window.gwPaLive=live;
   function mm(ym){ return (+String(ym||'').slice(5,7))+'월'; }
 
   /* 옛 신청 서버(board 없음)면 export(신청현황·신청정보)로 정리표를 만든다 — 안내 문자·대신 고치기는 새 서버에서만 */
@@ -46989,7 +46993,7 @@ window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15
       cb(res); }); }
 
   /* ───── 자동 반영 ───── */
-  window.gwPaApplyBoard=function(B){ var out={n:0, del:0, ride:0, no:[]}; if(!B||!B.rows||B.ym!==B.cur) return out;
+  window.gwPaApplyBoard=function(B){ var out={n:0, del:0, ride:0, no:[]}; if(!B||!B.rows||!live(B)) return out;
     if(myRole()!=='admin' || !state.attPulledOnce) return out;
     var from=B.ym+'-01', now=Date.now(), seen={}; if(!state.regMoves) state.regMoves={};
     B.rows.forEach(function(r){ var s=stu(r.n); if(!s){ out.no.push(r.n); return; } seen[r.n]=1;
@@ -47019,7 +47023,7 @@ window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15
   window.gwPaOpen=function(ym){ if(myRole()!=='admin'){ alert('관리자 기기에서만 볼 수 있습니다.'); return; }
     if(!state.attPulledOnce){ alert('클라우드 명단을 아직 받지 못했습니다. 잠시 뒤 다시 눌러 주세요.'); return; }
     P=P||{f:'all'}; P.ed=null; P.wait=true; paint();
-    var cur=!ym || (P.B && ym===P.B.cur);
+    var cur=!ym || (P.B && ym===P.B.cur);   /* 신청 달은 자동 반영과 함께 받음 */
     var go=function(res){ P.wait=false; if(!res||!res.ok||!res.board){ P.err=(res&&res.msg)||'신청 링크 서버에 닿지 못했습니다.'; paint(); return; } P.err=''; P.B=res.board; paint(); };
     if(cur) gwPaAuto(true, function(o, res){ if(o){ var m=applyMsg(o); P.msg=m? '📥 방금 반영: '+m : ''; } go(res); });
     else getBoard(ym, go); };
@@ -47071,7 +47075,8 @@ window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15
     (B.slots||[]).forEach(function(t){ (by[t.day]=by[t.day]||[]).push(t); });
     var days=['월','화','수','목','금','토','일'].filter(function(d){ return by[d]; });
     var h='<div id="gwPaEd" style="border:2px solid #182682;border-radius:12px;padding:10px 12px;margin:8px 0;background:#F6F8FF"><b>✏ '+esc(e.n)+' '+mm(B.ym)+' 신청 — 관장님이 대신 넣기·고치기</b>'+
-      '<div style="font-size:11.5px;color:var(--sub);margin:2px 0 6px">신청 기간·정원과 관계없이 저장됩니다(하루 '+(B.maxPerDay||2)+'시간까지 · 겹치는 시간 안 됨). 학부모님이 링크로 다시 저장하면 그 내용으로 바뀝니다.</div>';
+      '<div style="font-size:11.5px;color:var(--sub);margin:2px 0 6px">신청 기간·정원과 관계없이 저장됩니다(하루 '+(B.maxPerDay||2)+'시간까지 · 겹치는 시간 안 됨). 학부모님이 링크로 다시 저장하면 그 내용으로 바뀝니다.'+
+        (String(today())>B.ym+'-01'? ' <b style="color:#B45309">이미 시작한 달이라 다음 주 출석부부터 새 시간으로 들어갑니다(이번 주는 수련시간표 ✏️ 편집으로).</b>' : '')+'</div>';
     days.forEach(function(d){ h+='<div style="display:flex;align-items:center;flex-wrap:wrap;gap:2px;margin:2px 0"><b style="width:24px">'+d+'</b>'+by[d].map(function(t){ var on=e.picks.indexOf(t.k)>-1; return chip(on, esc(t.name+' '+String(t.label).split(' ').pop())+' <span style="opacity:.7;font-weight:600">'+t.n+(t.cap!=null?'/'+t.cap:'')+'</span>', "gwPaEdK('"+q(t.k)+"')"); }).join('')+'</div>'; });
     var o=B.opts||{}, sel=function(f, L, cur){ return '<select onchange="gwPaEdV(\''+f+'\',this.value)" style="font-size:13px;padding:4px 6px;border-radius:8px;border:1px solid var(--line);font-family:inherit"><option value="">(고르기)</option>'+L.map(function(v){ return '<option'+(v===cur?' selected':'')+'>'+esc(v)+'</option>'; }).join('')+'</select>'; };
     h+='<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px;font-size:13px">등·하원 '+sel('pick', o.pick||[], e.pick)+
@@ -47088,11 +47093,11 @@ window.gwBusCapTag=function(n){ var cap=15; try{ cap=Number(rcLoad().busCap)||15
     if(P.wait && !B) body='<div style="padding:30px;text-align:center;color:var(--sub)">신청 링크에서 신청을 받는 중…</div>';
     else if(!B) body='<div style="padding:20px;color:#B91C1C">'+esc(P.err||'신청을 받지 못했습니다.')+'</div><div style="text-align:center">'+btn('다시 받기','gwPaOpen()')+'</div>';
     else body=view(B);
-    var w=document.createElement('div'); w.innerHTML=uiModalHtml({id:'gwPaOv', size:'lg', title:'📝 학부모 신청 관리', sub: B? (mm(B.ym)+' 수련 신청 · '+(B.open?'신청 받는 중':'신청 기간 아님')+(B.period?' ('+esc(B.period)+')':'')) : '', close:'gwPaClose()', body:body,
+    var w=document.createElement('div'); w.innerHTML=uiModalHtml({id:'gwPaOv', size:'lg', title:'📝 학부모 신청 관리', sub: B? (mm(B.ym)+' 수련 신청 · '+(B.open?'신청 받는 중'+(B.period?' ('+esc(B.period)+')':''):B.fix?'신청한 가정 정정 기간 ('+esc(B.fix)+'까지)':'학부모 링크 잠김 — 바꿀 일은 관장님이 ✏ 고치기')) : '', close:'gwPaClose()', body:body,
       foot: B? '<button class="btn btn-s" onclick="gwPaOpen(\''+B.prev+'\')">◀ '+mm(B.prev)+'</button>'+(B.ym!==B.cur?'<button class="btn btn-s" onclick="gwPaOpen()">'+mm(B.cur)+'(신청 달) ▶</button>':'')+'<button class="btn btn-p" onclick="gwPaOpen('+(B.ym===B.cur?'':'\''+B.ym+'\'')+')"'+(P.wait?' disabled':'')+'>🔄 새로 받기</button>' : ''});
     document.body.appendChild(w.firstChild); try{ document.querySelector('#gwPaOv .mBody').scrollTop=sc; }catch(e){} }
   window.gwPaPaint=paint;
-  function view(B){ var rows=B.rows||[], cur=(B.ym===B.cur), I={}; rows.forEach(function(r){ I[r.n]=rowInfo(r); });
+  function view(B){ var rows=B.rows||[], cur=live(B), I={}; rows.forEach(function(r){ I[r.n]=rowInfo(r); });
     var need=rows.filter(function(r){ var d=I[r.n]; return d.warn.length || d.wdiff; }), memo=rows.filter(function(r){ return r.memo; }), last=ls('gw_pa_last');
     var h='';
     if(P.msg) h+='<div style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:10px;padding:7px 10px;font-size:13px;margin-bottom:8px">'+esc(P.msg)+'</div>';
